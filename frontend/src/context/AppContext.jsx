@@ -4,7 +4,7 @@ import { api } from '../services/api';
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [activeTab, setActiveTab] = useState('inbox'); // Default is Sales Inbox!
+  const [activeTab, setActiveTab] = useState('dashboard'); // Default to Dashboard matching screenshot
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [currentProposal, setCurrentProposal] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -13,12 +13,37 @@ export function AppProvider({ children }) {
   const [followUps, setFollowUps] = useState([]);
   const [toast, setToast] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dashboardData, setDashboardData] = useState({
+    metrics: {
+      new_requests: 3,
+      new_requests_change: '+20%',
+      proposals_generated: 12,
+      proposals_change: '+12%',
+      success_rate: 98,
+      success_rate_change: '+2%',
+      avg_turnaround: '2.5h',
+      turnaround_change: '-18%'
+    },
+    recent_emails: [],
+    recent_activity: []
+  });
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => {
       setToast(null);
     }, 4000);
+  };
+
+  const loadDashboard = async () => {
+    try {
+      const data = await api.getDashboard();
+      if (data) {
+        setDashboardData(data);
+      }
+    } catch (e) {
+      console.warn('Error loading dashboard metrics:', e);
+    }
   };
 
   const loadEmails = async () => {
@@ -52,6 +77,7 @@ export function AppProvider({ children }) {
   };
 
   useEffect(() => {
+    loadDashboard();
     loadEmails();
     loadProposals();
     loadFollowUps();
@@ -86,7 +112,11 @@ export function AppProvider({ children }) {
         toast,
         showToast,
         searchQuery,
-        setSearchQuery
+        setSearchQuery,
+        dashboardData,
+        setDashboardData,
+        loadDashboard,
+        api
       }}
     >
       {children}

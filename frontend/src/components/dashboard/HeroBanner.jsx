@@ -3,11 +3,11 @@ import { ArrowRight, RefreshCw, Sparkles, Mail, FileCheck } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export default function HeroBanner() {
-  const { setActiveTab, loadDashboard, showToast } = useApp();
+  const { setActiveTab, loadDashboard, loadEmails, showToast } = useApp();
 
   const handleSync = async () => {
     showToast('Scanning email mailbox for service requests...', 'info');
-    await loadDashboard();
+    await Promise.all([loadDashboard(), loadEmails()]);
     showToast('Found 3 pending customer service requests!');
   };
 

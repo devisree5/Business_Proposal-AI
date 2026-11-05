@@ -25,6 +25,9 @@ async function fetchJSON(endpoint, options = {}) {
 }
 
 export const api = {
+  // Dashboard & Analytics
+  getDashboard: () => fetchJSON('/api/analytics/dashboard'),
+
   // Emails & Sales Inbox
   getEmails: (params = {}) => {
     const q = new URLSearchParams(params).toString();

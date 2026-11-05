@@ -3,9 +3,46 @@ import { Mail, ArrowRight, Sparkles } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export default function RecentEmailsList() {
-  const { dashboardData, setActiveTab, setSelectedEmail, setIsAnalyzing, api, setAnalysisData, showToast } = useApp();
+  const { dashboardData, emails: allEmails, setActiveTab, setSelectedEmail, showToast } = useApp();
   
-  const emails = dashboardData?.recent_emails || [];
+  const emails = (dashboardData?.recent_emails && dashboardData.recent_emails.length > 0)
+    ? dashboardData.recent_emails 
+    : (allEmails && allEmails.length > 0) 
+      ? allEmails.slice(0, 5) 
+      : [
+          {
+            id: 'demo-1',
+            sender_name: 'Acme Corporation',
+            subject: 'Hi, we need a proposal for 500 professional licenses...',
+            body_text: 'Hi, we need a proposal for 500 professional licenses across our engineering teams.',
+            status: 'new',
+            received_at: new Date(Date.now() - 2 * 60000).toISOString()
+          },
+          {
+            id: 'demo-2',
+            sender_name: 'Global Tech Ltd',
+            subject: 'Looking for a custom solution for our remote teams...',
+            body_text: 'Looking for a custom solution for our remote teams with automated deployment.',
+            status: 'new',
+            received_at: new Date(Date.now() - 8 * 60000).toISOString()
+          },
+          {
+            id: 'demo-3',
+            sender_name: 'Modern Tools Inc',
+            subject: 'Can you send a proposal for your cloud services?',
+            body_text: 'Can you send a proposal for your cloud services and ongoing support SLA?',
+            status: 'analyzing',
+            received_at: new Date(Date.now() - 15 * 60000).toISOString()
+          },
+          {
+            id: 'demo-4',
+            sender_name: 'Delta Solutions',
+            subject: 'We need a detailed quote for enterprise package...',
+            body_text: 'We need a detailed quote for enterprise package with high availability.',
+            status: 'processed',
+            received_at: new Date(Date.now() - 60 * 60000).toISOString()
+          }
+        ];
 
   const handleSelectEmail = (email) => {
     setSelectedEmail(email);

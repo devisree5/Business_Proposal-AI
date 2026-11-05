@@ -19,9 +19,13 @@ services:
       - key: GEMINI_MODEL
         value: gemini-1.5-flash
       - key: COMPANY_NAME
-        value: "ProposalGen Solutions Inc."
+        value: "Anvayuone"
+      - key: BOT_NAME
+        value: "Anvayuone bot"
       - key: COMPANY_EMAIL
-        value: "sales@proposalgen.ai"
+        value: "anyaforgerrrr345@gmail.com"
+      - key: GMAIL_SALES_EMAIL
+        value: "anyaforgerrrr345@gmail.com"
 
 databases:
   - name: proposalgen-db
