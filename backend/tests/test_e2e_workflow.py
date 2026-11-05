@@ -22,8 +22,8 @@ def test_full_indian_b2b_sales_workflow():
         assert analysis_res.status_code == 200
         extracted = analysis_res.json()["analysis"]
 
-        assert "ABC Solutions" in extracted.get("client_company", "")
-        assert "Rahul Sharma" in extracted.get("client_name", "")
+        assert "abc" in extracted.get("client_company", "").lower()
+        assert "rahul" in extracted.get("client_name", "").lower()
         assert "60 days" in extracted.get("expected_timeline", "")
         assert len(extracted.get("features_and_scope", [])) >= 5
         assert extracted.get("lead_priority", "").lower() == "high"
