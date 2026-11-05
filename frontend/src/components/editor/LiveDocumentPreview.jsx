@@ -210,7 +210,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                   <div className="flex-1 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-[10px] text-slate-600 space-y-0.5">
                     <div className="font-bold text-slate-800 uppercase tracking-wider text-[9px]">NEFT / RTGS Bank Details:</div>
                     <div>Bank: HDFC Bank Ltd. | Branch: Madhapur, Hyderabad</div>
-                    <div>A/C Name: Nexura Technologies Pvt. Ltd.</div>
+                    <div>A/C Name: {proposal.sender_company || 'Anvayuone'}</div>
                     <div>Account No: <span className="font-mono font-bold text-slate-900">50200012345678</span> | IFSC: <span className="font-mono font-bold text-slate-900">HDFC0001234</span></div>
                   </div>
 

@@ -64,18 +64,49 @@ def ingest_email(payload: EmailIngestRequest, db: Session = Depends(get_db)):
     }
 
 @router.post("/webhook/gmail")
+@router.post("/webhook")
+@router.post("/webhook/n8n")
 async def gmail_webhook(request: Request, db: Session = Depends(get_db)):
     """
-    Automated Webhook endpoint for n8n Gmail Trigger or Google Cloud Pub/Sub.
-    Automatically parses incoming Gmail messages without manual sync buttons!
+    Automated Webhook endpoint for n8n Gmail Trigger (https://anvayuone.app.n8n.cloud)
+    Automatically parses incoming customer emails, extracts requirements with AI, and registers deal in Sales Inbox!
     """
     try:
-        body = await request.json()
-        sender_email = body.get("from") or body.get("sender_email") or "customer@client.in"
-        sender_name = body.get("from_name") or body.get("sender_name")
-        subject = body.get("subject", "Business Enquiry")
-        body_text = body.get("body") or body.get("text") or body.get("snippet", "")
-        message_id = body.get("message_id") or body.get("id")
+        raw_body = await request.json()
+        # Handle if n8n sends a single object or a list of items
+        payload = raw_body[0] if isinstance(raw_body, list) and len(raw_body) > 0 else raw_body
+
+        from_raw = payload.get("from") or payload.get("sender_email") or payload.get("sender") or ""
+        sender_email = "customer@client.in"
+        sender_name = "Prospective Client"
+
+        if isinstance(from_raw, dict):
+            # n8n nested format: {"value": [{"address": "...", "name": "..."}]}
+            if "value" in from_raw and isinstance(from_raw["value"], list) and len(from_raw["value"]) > 0:
+                sender_email = from_raw["value"][0].get("address") or sender_email
+                sender_name = from_raw["value"][0].get("name") or sender_name
+            elif "text" in from_raw:
+                from_raw = from_raw["text"]
+        
+        if isinstance(from_raw, str) and from_raw:
+            import re
+            email_match = re.search(r'<([^>]+)>', from_raw)
+            if email_match:
+                sender_email = email_match.group(1).strip()
+                sender_name = from_raw.split('<')[0].strip(' "') or sender_email.split('@')[0].capitalize()
+            elif "@" in from_raw:
+                sender_email = from_raw.strip()
+                sender_name = sender_email.split('@')[0].replace('.', ' ').title()
+
+        if payload.get("from_name"):
+            sender_name = payload["from_name"]
+        elif payload.get("sender_name"):
+            sender_name = payload["sender_name"]
+
+        subject = payload.get("subject") or "Business Requirement & Proposal Request"
+        body_text = payload.get("text") or payload.get("body") or payload.get("snippet") or payload.get("textAsHtml") or subject
+        message_id = payload.get("messageId") or payload.get("message_id") or payload.get("id")
+        thread_id = payload.get("threadId") or payload.get("thread_id")
 
         record, is_new = email_service.ingest_email(
             db,
@@ -84,10 +115,41 @@ async def gmail_webhook(request: Request, db: Session = Depends(get_db)):
             body_text=body_text,
             sender_name=sender_name,
             recipient_email=settings.GMAIL_SALES_EMAIL,
-            message_id=message_id
+            message_id=message_id,
+            thread_id=thread_id
         )
 
-        return {"success": True, "is_new": is_new, "email_id": record.id}
+        # Auto-run AI requirement extraction for fresh inbound emails
+        if is_new:
+            try:
+                analysis = ai_service.analyze_email(
+                    sender_email=record.sender_email,
+                    subject=record.subject,
+                    body_text=record.body_text
+                )
+                record.analysis_json = analysis
+                record.status = "analyzed"
+                if analysis.get("lead_priority"):
+                    record.lead_priority = analysis["lead_priority"]
+                if analysis.get("priority_rationale"):
+                    record.priority_rationale = analysis["priority_rationale"]
+                db.commit()
+                db.refresh(record)
+            except Exception as e_ai:
+                logger.warning(f"Auto-analysis on webhook ingest error: {e_ai}")
+
+        return {
+            "success": True,
+            "is_new": is_new,
+            "email_id": record.id,
+            "client_name": record.sender_name,
+            "sender_email": record.sender_email,
+            "subject": record.subject,
+            "lead_priority": record.lead_priority,
+            "status": record.status,
+            "company": settings.COMPANY_NAME,
+            "bot": settings.BOT_NAME
+        }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Webhook ingestion error: {str(e)}")
 

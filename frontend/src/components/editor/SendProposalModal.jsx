@@ -12,7 +12,7 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
     `Business Proposal: ${proposal?.title || 'E-commerce Website Development'} [Ref: ${proposal?.id || 'PR-2025-001'}]`
   );
   const [message, setMessage] = useState(
-    `Dear ${proposal?.client_name || 'Rahul Sharma'},\n\nThank you for considering ${proposal?.sender_company || 'Nexura Technologies Pvt. Ltd.'} for your upcoming project. Please find attached our detailed commercial business proposal (Ref: ${proposal?.id || 'PR-2025-001'}) covering scope, 60-day delivery milestones, and GST pricing breakdown.\n\nWe look forward to collaborating with ${proposal?.client_company || 'ABC Solutions Pvt. Ltd.'}.\n\nBest regards,\n${proposal?.sender_name || 'Anya Sharma'}\nSolutions Lead | Nexura Technologies Pvt. Ltd., Hyderabad`
+    `Dear ${proposal?.client_name || 'Rahul Sharma'},\n\nThank you for considering ${proposal?.sender_company || 'Anvayuone'} for your upcoming project. Please find attached our detailed commercial business proposal (Ref: ${proposal?.id || 'PR-2025-001'}) covering scope, 60-day delivery milestones, and GST pricing breakdown.\n\nWe look forward to collaborating with ${proposal?.client_company || 'ABC Solutions Pvt. Ltd.'}.\n\nBest regards,\n${proposal?.sender_name || 'Anvayuone bot'}\nAI Sales Automation | Anvayuone, Hyderabad`
   );
   const [sending, setSending] = useState(false);
 

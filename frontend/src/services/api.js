@@ -75,7 +75,22 @@ export const api = {
   // AI Polish
   polishText: (text, action) => fetchJSON('/api/ai/polish', { method: 'POST', body: JSON.stringify({ text, action }) }),
 
-  // Settings
+  // Settings & Gmail / n8n Integrations
   getSettings: () => fetchJSON('/api/settings'),
   updateSettings: (data) => fetchJSON('/api/settings', { method: 'POST', body: JSON.stringify(data) }),
+  testGmail: (appPassword) =>
+    fetchJSON('/api/settings/test-gmail', {
+      method: 'POST',
+      body: JSON.stringify({ app_password: appPassword }),
+    }),
+  sendTestEmail: (recipientEmail) =>
+    fetchJSON('/api/settings/send-test-email', {
+      method: 'POST',
+      body: JSON.stringify({ recipient_email: recipientEmail }),
+    }),
+  simulateN8nWebhook: (emailData) =>
+    fetchJSON('/api/emails/webhook/gmail', {
+      method: 'POST',
+      body: JSON.stringify(emailData),
+    }),
 };

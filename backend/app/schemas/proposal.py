@@ -34,8 +34,8 @@ class ProposalBase(BaseModel):
     client_gstin: Optional[str] = None
     
     # Provider Details (Hyderabad IT Hub)
-    sender_company: str = "Nexura Technologies Pvt. Ltd."
-    sender_name: Optional[str] = "Anya Sharma"
+    sender_company: str = "Anvayuone"
+    sender_name: Optional[str] = "Anvayuone bot"
     sender_email: str = "anyaforgerrrr345@gmail.com"
     sender_phone: Optional[str] = "+91 40 4859 2100"
     sender_address: Optional[str] = "Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081"

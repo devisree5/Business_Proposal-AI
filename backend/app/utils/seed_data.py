@@ -126,7 +126,7 @@ ABC Solutions Pvt. Ltd.""",
         "sender_email": "priya.nair@technova.co.in",
         "recipient_email": "anyaforgerrrr345@gmail.com",
         "subject": "Requirement for Mobile App Development (iOS & Android)",
-        "body_text": """Dear Nexura Sales Team,
+        "body_text": """Dear Anvayuone Sales Team,
 
 TechNova is looking to develop a cross-platform mobile application for our field service agents. We need native-grade performance on both iOS and Android with offline data sync, push notifications, and Razorpay subscription billing.
 
@@ -223,8 +223,8 @@ def seed_database(db: Session):
             client_phone="+91 98765 43210",
             client_address="Cyber Gateway, Hitec City, Hyderabad, Telangana",
             client_gstin="36AABCA1234E1Z1",
-            sender_company="Nexura Technologies Pvt. Ltd.",
-            sender_name="Anya Sharma",
+            sender_company="Anvayuone",
+            sender_name="Anvayuone bot",
             sender_email="anyaforgerrrr345@gmail.com",
             sender_phone="+91 40 4859 2100",
             sender_address="Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081",

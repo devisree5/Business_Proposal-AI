@@ -24,8 +24,8 @@ class Proposal(Base):
     client_gstin = Column(String(50), nullable=True)
     
     # Provider Details (Hyderabad Development Hub)
-    sender_company = Column(String(255), default="Nexura Technologies Pvt. Ltd.")
-    sender_name = Column(String(255), default="Anya Sharma")
+    sender_company = Column(String(255), default="Anvayuone")
+    sender_name = Column(String(255), default="Anvayuone bot")
     sender_email = Column(String(255), default="anyaforgerrrr345@gmail.com")
     sender_phone = Column(String(100), default="+91 40 4859 2100")
     sender_address = Column(Text, default="Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081")

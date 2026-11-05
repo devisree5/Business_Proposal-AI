@@ -1,17 +1,19 @@
-# Nexura Sales AI | Email-Driven B2B Proposal Automation System
+# Anvayuone Sales AI | Email-Driven B2B Proposal Automation System
 ### Real-World Email-to-Proposal Pipeline with Indian Business Conventions (₹ INR & 18% GST)
 
-![Nexura Sales AI](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)
+![Anvayuone Sales AI](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)
 
-> **Nexura Sales AI** is a production-ready, email-driven B2B sales automation system tailored for Indian software service companies. Located in Hitec City, Hyderabad, it converts inbound customer service inquiries received on the company's dedicated sales email (`anyaforgerrrr345@gmail.com`) into reviewed, priced, and delivered business proposals in **₹ INR** with **18% GST** (CGST/SGST/IGST breakdown), Indian corporate credentials, and 3-day automatic follow-up reminders.
+> **Anvayuone Sales AI** is a production-ready, email-driven B2B sales automation system powered by **Anvayuone bot**. Located in Hitec City, Hyderabad, it converts inbound customer inquiries received on the company's dedicated sales email (`anyaforgerrrr345@gmail.com`) into reviewed, priced, and delivered business proposals in **₹ INR** with **18% GST** (CGST/SGST/IGST breakdown), Indian corporate credentials, and 3-day automatic follow-up reminders. It connects directly with **n8n** (https://anvayuone.app.n8n.cloud/assistant) to monitor the inbox and trigger automated proposal generation.
 
 ---
 
 ## 🏛️ Indian Business & Corporate Profile
 
-- **Operating Entity**: **Nexura Technologies Pvt. Ltd.**
+- **Operating Entity**: **Anvayuone**
+- **Bot Name**: **Anvayuone bot**
 - **Headquarters**: Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081
 - **Dedicated Sales Email**: `anyaforgerrrr345@gmail.com`
+- **n8n Cloud Assistant**: [https://anvayuone.app.n8n.cloud/assistant](https://anvayuone.app.n8n.cloud/assistant)
 - **GSTIN**: `36AAACN1234F1Z5` (Telangana State Code: `36`)
 - **PAN**: `AAACN1234F`
 - **Corporate Remittance**: HDFC Bank Ltd., Madhapur Branch (A/C: `50200012345678` | IFSC: `HDFC0001234`)

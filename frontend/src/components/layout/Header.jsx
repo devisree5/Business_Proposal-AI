@@ -61,11 +61,11 @@ export default function Header() {
         {/* User Avatar */}
         <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 flex items-center justify-center font-bold text-white text-xs shadow-sm">
-            AS
+            AB
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-xs font-bold text-slate-800 leading-tight">Anya Sharma</p>
-            <p className="text-[10px] text-slate-500">Nexura Tech &bull; Hyd</p>
+            <p className="text-xs font-bold text-slate-800 leading-tight">Anvayuone bot</p>
+            <p className="text-[10px] text-slate-500">Anvayuone &bull; Hyd</p>
           </div>
         </div>
       </div>

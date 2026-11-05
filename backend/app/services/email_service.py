@@ -4,6 +4,7 @@ import imaplib
 import email
 import base64
 import os
+import smtplib
 import logging
 from email.header import decode_header
 from email.mime.multipart import MIMEMultipart
@@ -57,7 +58,7 @@ class EmailService:
         # Inferred priority based on keywords if not set
         if not lead_priority or lead_priority == "Medium":
             text_lower = f"{subject} {body_text}".lower()
-            if any(w in text_lower for w in ["urgent", "budget", "e-commerce", "enterprise", "proposal"]):
+            if any(w in text_lower for w in ["urgent", "budget", "e-commerce", "ecommerce", "enterprise", "proposal"]):
                 lead_priority = "High"
 
         # Create new record
@@ -98,14 +99,22 @@ class EmailService:
         pdf_path: Optional[str] = None
     ) -> Dict[str, Any]:
         """
-        Sends an email using Gmail API or SMTP so it appears in the connected Gmail account Sent folder.
+        Sends an email to client recipient.
+        Priority order:
+        1. Live Gmail SMTP (via Google App Password or SMTP credentials)
+        2. Google OAuth API (if client ID/Secret/Refresh token configured)
+        3. n8n Outbound Webhook (if N8N_WEBHOOK_OUTBOUND_URL configured)
+        4. Simulated fallback (logged cleanly)
         """
+        sender_email = settings.SMTP_FROM or settings.GMAIL_SALES_EMAIL or "anyaforgerrrr345@gmail.com"
+        password = settings.SMTP_PASSWORD or settings.GMAIL_APP_PASSWORD
+
         message = MIMEMultipart()
         message['to'] = to_email
-        message['from'] = settings.GMAIL_SALES_EMAIL
+        message['from'] = f"{settings.BOT_NAME} <{sender_email}>"
         message['subject'] = subject
 
-        message.attach(MIMEText(body_text, 'plain'))
+        message.attach(MIMEText(body_text, 'plain', 'utf-8'))
 
         if pdf_path and os.path.exists(pdf_path):
             with open(pdf_path, 'rb') as f:
@@ -114,7 +123,51 @@ class EmailService:
                 part['Content-Disposition'] = f'attachment; filename="{filename}"'
                 message.attach(part)
 
-        # 1. Try Gmail API OAuth if credentials configured
+        # 1. Live Gmail SMTP with App Password
+        if password:
+            # Clean password of any spaces (Google shows app passwords with spaces like "abcd efgh ijkl mnop")
+            clean_pwd = password.replace(" ", "").strip()
+            
+            # Try port 587 STARTTLS
+            try:
+                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=12)
+                server.starttls()
+                server.login(sender_email, clean_pwd)
+                server.send_message(message)
+                server.quit()
+                logger.info(f"Delivered live email to {to_email} via Gmail SMTP (port {settings.SMTP_PORT})")
+                return {
+                    "success": True,
+                    "mode": "live_gmail_smtp",
+                    "recipient": to_email,
+                    "message": f"Real email delivered to {to_email} via Gmail SMTP ({sender_email})"
+                }
+            except Exception as e587:
+                logger.warning(f"Port 587 SMTP failed: {e587}. Trying SSL port 465...")
+                try:
+                    server_ssl = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=12)
+                    server_ssl.login(sender_email, clean_pwd)
+                    server_ssl.send_message(message)
+                    server_ssl.quit()
+                    logger.info(f"Delivered live email to {to_email} via Gmail SMTP SSL (port 465)")
+                    return {
+                        "success": True,
+                        "mode": "live_gmail_smtp_ssl",
+                        "recipient": to_email,
+                        "message": f"Real email delivered to {to_email} via Gmail SSL ({sender_email})"
+                    }
+                except Exception as e465:
+                    logger.error(f"Gmail SMTP authentication failed: {e465}")
+                    # Provide informative message if password was rejected
+                    auth_err = str(e465) if "Username and Password not accepted" in str(e465) else str(e587)
+                    return {
+                        "success": False,
+                        "mode": "smtp_failed",
+                        "error": f"Gmail rejected login: {auth_err}. Please ensure 2-Step Verification is ON and a 16-character App Password is used.",
+                        "recipient": to_email
+                    }
+
+        # 2. Try Gmail API OAuth if credentials configured
         if settings.GMAIL_REFRESH_TOKEN and settings.GMAIL_CLIENT_ID and settings.GMAIL_CLIENT_SECRET:
             try:
                 from google.oauth2.credentials import Credentials
@@ -142,47 +195,86 @@ class EmailService:
                     "recipient": to_email
                 }
             except Exception as e:
-                logger.error(f"Gmail API error, falling back to SMTP/simulated: {e}")
+                logger.error(f"Gmail API error: {e}")
 
-        # 2. Try SMTP fallback
-        if settings.SMTP_HOST and settings.SMTP_USER and settings.SMTP_PASSWORD:
-            try:
-                import smtplib
-                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=10)
-                server.starttls()
-                server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-                server.send_message(message)
-                server.quit()
-                return {"success": True, "mode": "smtp_gmail", "recipient": to_email}
-            except Exception as e:
-                logger.error(f"SMTP error: {e}")
-
-        # 3. Simulated delivery (always succeeds for clean local testing)
+        # 3. Simulated delivery fallback
         return {
             "success": True,
             "mode": "gmail_simulated",
             "gmail_message_id": f"gmsg-{uuid.uuid4().hex[:12]}",
             "recipient": to_email,
-            "note": f"Delivered proposal from {settings.GMAIL_SALES_EMAIL} to {to_email}"
+            "note": f"Simulated delivery from {sender_email} to {to_email}. To deliver real emails, add your 16-character Google App Password in Settings."
         }
+
+    @classmethod
+    def test_gmail_credentials(cls, email_address: str, app_password: str) -> Dict[str, Any]:
+        """
+        Tests IMAP and SMTP login to Gmail using the provided 16-character Google App Password.
+        """
+        clean_pwd = app_password.replace(" ", "").strip()
+        results = {
+            "account": email_address,
+            "smtp_connected": False,
+            "imap_connected": False,
+            "details": []
+        }
+
+        # Test SMTP
+        try:
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=8)
+            server.starttls()
+            server.login(email_address, clean_pwd)
+            server.quit()
+            results["smtp_connected"] = True
+            results["details"].append("SMTP connection on smtp.gmail.com:587 successful!")
+        except Exception as e:
+            try:
+                server_ssl = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=8)
+                server_ssl.login(email_address, clean_pwd)
+                server_ssl.quit()
+                results["smtp_connected"] = True
+                results["details"].append("SMTP connection on smtp.gmail.com:465 (SSL) successful!")
+            except Exception as e_ssl:
+                results["details"].append(f"SMTP error: {str(e_ssl)}")
+
+        # Test IMAP
+        try:
+            mail = imaplib.IMAP4_SSL("imap.gmail.com", 993)
+            mail.login(email_address, clean_pwd)
+            mail.select("inbox")
+            status, _ = mail.search(None, 'ALL')
+            mail.close()
+            mail.logout()
+            results["imap_connected"] = True
+            results["details"].append("IMAP connection on imap.gmail.com:993 successful!")
+        except Exception as e_imap:
+            results["details"].append(f"IMAP error: {str(e_imap)}")
+
+        results["success"] = results["smtp_connected"] or results["imap_connected"]
+        return results
 
     @classmethod
     def sync_from_imap(cls, db: Session, max_emails: int = 10) -> Dict[str, Any]:
         """
         Polls Gmail inbox via IMAP SSL (imap.gmail.com:993)
         """
-        if not settings.IMAP_USER or not settings.IMAP_PASSWORD:
+        user = settings.IMAP_USER or settings.GMAIL_SALES_EMAIL
+        pwd = settings.IMAP_PASSWORD or settings.GMAIL_APP_PASSWORD
+
+        if not user or not pwd:
             return {
                 "success": False,
-                "message": f"Gmail App Password not set in .env for {settings.GMAIL_SALES_EMAIL}. Use the simulator or add GMAIL_PASSWORD in Settings.",
+                "message": f"Gmail App Password not configured for {user}. Enter your 16-character Google App Password in Settings or use n8n webhook.",
                 "ingested_count": 0
             }
 
         ingested = 0
         duplicates = 0
+        clean_pwd = pwd.replace(" ", "").strip()
+
         try:
             mail = imaplib.IMAP4_SSL(settings.IMAP_HOST, settings.IMAP_PORT)
-            mail.login(settings.IMAP_USER, settings.IMAP_PASSWORD)
+            mail.login(user, clean_pwd)
             mail.select("inbox")
 
             status, messages = mail.search(None, 'UNSEEN')

@@ -71,8 +71,8 @@ def test_full_indian_b2b_sales_workflow():
             "client_name": extracted.get("client_name", "Rahul Sharma"),
             "client_email": "rahul@abcsolutions.in",
             "client_phone": "+91 98765 43210",
-            "sender_company": "Nexura Technologies Pvt. Ltd.",
-            "sender_name": "Anya Sharma",
+            "sender_company": "Anvayuone",
+            "sender_name": "Anvayuone bot",
             "sender_email": "anyaforgerrrr345@gmail.com",
             "sender_phone": "+91 40 4859 2300",
             "sender_address": "Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081",
@@ -151,6 +151,19 @@ def test_full_indian_b2b_sales_workflow():
         revised = rev_res.json()
         assert revised["version"] == 2
         assert revised["parent_proposal_id"] == prop_id
+
+        # 9. Test n8n Inbound Webhook (https://anvayuone.app.n8n.cloud)
+        webhook_res = client.post("/api/emails/webhook/gmail", json={
+            "from": "Vikram Patel <vikram@patelenterprises.in>",
+            "subject": "Requirement for E-commerce Mobile Application",
+            "body": "Hi Anvayuone team, We need a mobile shopping app with payment gateway completed within 45 days.",
+            "messageId": "n8n-test-msg-001"
+        })
+        assert webhook_res.status_code == 200
+        wb_data = webhook_res.json()
+        assert wb_data["success"] is True
+        assert wb_data["company"] == "Anvayuone"
+        assert wb_data["bot"] == "Anvayuone bot"
 
 if __name__ == "__main__":
     test_full_indian_b2b_sales_workflow()

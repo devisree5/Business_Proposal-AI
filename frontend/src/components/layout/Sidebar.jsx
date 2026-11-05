@@ -34,9 +34,9 @@ export default function Sidebar() {
           </div>
           <div>
             <h1 className="text-white font-bold text-base tracking-tight leading-none flex items-center gap-1.5">
-              Nexura <span className="text-blue-400 font-semibold text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20">Sales AI</span>
+              Anvayuone <span className="text-blue-400 font-semibold text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20">Sales Bot</span>
             </h1>
-            <p className="text-[11px] text-slate-400 font-medium mt-1">₹ INR &bull; Hyderabad</p>
+            <p className="text-[11px] text-slate-400 font-medium mt-1">₹ INR &bull; anyaforgerrrr345@gmail.com</p>
           </div>
         </div>
 
@@ -81,10 +81,10 @@ export default function Sidebar() {
         <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50 flex flex-col gap-2">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center font-bold text-blue-400 text-xs">
-              AS
+              AB
             </div>
             <div className="overflow-hidden">
-              <p className="text-[11px] font-semibold text-white truncate">Anya Sharma</p>
+              <p className="text-[11px] font-semibold text-white truncate">Anvayuone bot</p>
               <p className="text-[10px] text-slate-400 truncate">anyaforgerrrr345@gmail.com</p>
             </div>
           </div>

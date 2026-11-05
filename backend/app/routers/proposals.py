@@ -283,8 +283,8 @@ I am writing to follow up on the business proposal for '{prop.title}' (Ref: {pro
 We would love to know if you had a chance to review the scope and pricing (₹{prop.total_amount:,.2f} INR). Please let us know if you have any questions or if you'd like to adjust any milestones to fit your 60-day launch schedule.
 
 Warm regards,
-{prop.sender_name or 'Anya Sharma'}
-{prop.sender_company} | {settings.GMAIL_SALES_EMAIL}
+{prop.sender_name or settings.BOT_NAME}
+{prop.sender_company or settings.COMPANY_NAME} | {settings.GMAIL_SALES_EMAIL}
 """
 
     res = email_service.send_via_gmail_api(

@@ -40,8 +40,8 @@ Key Proposal Highlights:
 {custom_message or 'Please review the attached PDF document. We would be pleased to schedule a brief discovery call to answer any technical or commercial queries.'}
 
 Warm regards,
-{proposal.sender_name or 'Anya Sharma'}
-Client Solutions Lead | {proposal.sender_company}
+{proposal.sender_name or settings.BOT_NAME}
+AI Sales Automation Bot | {proposal.sender_company or settings.COMPANY_NAME}
 Hyderabad, India | {proposal.sender_phone or '+91 40 4859 2100'}
 Sales Email: {settings.GMAIL_SALES_EMAIL}
 """
