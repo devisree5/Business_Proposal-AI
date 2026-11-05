@@ -167,14 +167,16 @@ def seed_database(db: Session):
     Seeds initial Indian catalogue, sample customer inquiries, and benchmark proposal in ₹ INR.
     """
     # 1. Seed Pricing Catalogue
-    if db.query(PricingService).count() == 0:
+    if db.query(PricingService).count() == 0 or db.query(PricingService).filter(PricingService.code == "WEB-DEV").count() == 0:
         for item_data in DEFAULT_CATALOGUE:
-            service = PricingService(**item_data)
-            db.add(service)
+            existing = db.query(PricingService).filter(PricingService.code == item_data["code"]).first()
+            if not existing:
+                service = PricingService(**item_data)
+                db.add(service)
         db.commit()
 
     # 2. Seed Customer Inquiries
-    if db.query(EmailRecord).count() == 0:
+    if db.query(EmailRecord).filter(EmailRecord.sender_email == "rahul@abcsolutions.in").count() == 0:
         now = datetime.utcnow()
         for email_info in SAMPLE_EMAILS:
             rec_time = now - timedelta(minutes=email_info["minutes_ago"])
@@ -207,7 +209,7 @@ def seed_database(db: Session):
         db.commit()
 
     # 3. Seed Benchmark Proposal in ₹ INR (Matching user specification!)
-    if db.query(Proposal).count() == 0:
+    if db.query(Proposal).filter(Proposal.id == "PR-2025-001").count() == 0:
         now = datetime.utcnow()
         sample_prop = Proposal(
             id="PR-2025-001",

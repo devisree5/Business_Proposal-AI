@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.config import settings
-from backend.app.database import engine, Base, SessionLocal
+from backend.app.database import engine, Base, SessionLocal, run_auto_migrations
 from backend.app.utils.seed_data import seed_database
 from backend.app.routers import emails, pricing, proposals, ai, analytics, settings as settings_router
 
@@ -13,6 +13,8 @@ from backend.app.routers import emails, pricing, proposals, ai, analytics, setti
 async def lifespan(app: FastAPI):
     # Initialize DB tables
     Base.metadata.create_all(bind=engine)
+    # Safely migrate missing columns if existing SQLite schema is older
+    run_auto_migrations(engine)
     # Seed initial data
     db = SessionLocal()
     try:

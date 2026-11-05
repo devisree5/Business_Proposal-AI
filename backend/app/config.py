@@ -2,13 +2,16 @@ import os
 from pydantic_settings import BaseSettings
 from typing import Optional
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "proposalgen.db").replace("\\", "/")
+
 class Settings(BaseSettings):
     APP_NAME: str = "ProposalGen AI"
     APP_VERSION: str = "2.0.0"
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     
-    # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./proposalgen.db")
+    # Database - default always points to project root proposalgen.db regardless of working directory
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH}")
     
     # Gemini AI
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", None)
