@@ -6,8 +6,8 @@ class PricingServiceBase(BaseModel):
     name: str
     category: str
     description: Optional[str] = None
-    unit_type: str = "fixed" # fixed, hourly, per_user, monthly, milestone
-    default_rate: float
+    unit_type: str = "fixed" # fixed, monthly, per_screen, per_user
+    default_rate: float # in INR
     default_quantity: float = 1.0
     keywords: List[str] = []
     is_active: bool = True
@@ -40,6 +40,8 @@ class MatchRequirementItem(BaseModel):
 class MatchRequirementsRequest(BaseModel):
     requirements: List[MatchRequirementItem]
     client_budget: Optional[str] = None
+    gst_rate: Optional[float] = 18.0
+    is_interstate: Optional[bool] = False
 
 class MatchedLineItem(BaseModel):
     id: str
@@ -47,7 +49,7 @@ class MatchedLineItem(BaseModel):
     description: str
     unit_type: str
     quantity: float
-    unit_price: float
+    unit_price: float # in INR
     total: float
     matched_service_id: Optional[str] = None
     matched_service_code: Optional[str] = None
@@ -59,8 +61,14 @@ class PricingCalculationResponse(BaseModel):
     items: List[MatchedLineItem]
     subtotal: float
     discount_percent: float
-    tax_percent: float
-    tax_amount: float
-    total_amount: float
-    currency: str = "USD"
+    discount_amount: float
+    gst_rate: float
+    is_interstate: bool
+    cgst_amount: float
+    sgst_amount: float
+    igst_amount: float
+    tax_amount: float # Total GST
+    total_amount: float # Grand total in INR
+    currency: str = "INR"
+    currency_symbol: str = "₹"
     has_unmatched_items: bool = False

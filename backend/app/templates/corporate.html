@@ -5,367 +5,89 @@
   <title>{{ proposal.title }}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Inter:wght@400;500;600;700&display=swap');
-    
-    @page {
-      size: A4;
-      margin: 15mm 15mm 18mm 15mm;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: #1e293b;
-      background: #ffffff;
-      font-size: 12.5px;
-      line-height: 1.6;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    /* Executive Top Bar */
-    .top-bar {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 24px 28px;
-      border-bottom: 4px solid #d97706; /* Amber/gold accent */
-      border-radius: 4px;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .top-company {
-      font-family: 'Merriweather', serif;
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .top-meta {
-      text-align: right;
-      font-size: 11.5px;
-      color: #cbd5e1;
-    }
-
-    .top-id {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fbbf24;
-      margin-bottom: 2px;
-    }
-
-    h2, h3, h4 {
-      font-family: 'Merriweather', serif;
-      color: #0f172a;
-    }
-
-    /* Document Title */
-    .doc-title-section {
-      margin-bottom: 24px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .doc-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .doc-subtitle {
-      font-size: 12.5px;
-      color: #64748b;
-      margin-top: 4px;
-    }
-
-    /* Executive Meta Grid */
-    .exec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-
-    .exec-card {
-      border: 1px solid #cbd5e1;
-      padding: 16px 18px;
-      background: #f8fafc;
-      border-top: 3px solid #0f172a;
-    }
-
-    .exec-card h4 {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-
-    .exec-name {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .exec-sub {
-      font-size: 12px;
-      color: #475569;
-      margin-top: 2px;
-    }
-
-    /* Callout */
-    .callout {
-      border-left: 4px solid #0f172a;
-      background: #f1f5f9;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: #1e293b;
-      font-style: italic;
-    }
-
-    .section-heading {
-      font-size: 14.5px;
-      font-weight: 700;
-      border-bottom: 2px solid #0f172a;
-      padding-bottom: 6px;
-      margin-bottom: 14px;
-      margin-top: 24px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Deliverables */
-    .deliv-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .deliv-box {
-      border: 1px solid #e2e8f0;
-      padding: 12px 14px;
-      background: #ffffff;
-    }
-
-    .deliv-title {
-      font-weight: 700;
-      font-size: 12.5px;
-      color: #0f172a;
-      margin-bottom: 4px;
-    }
-
-    /* Corporate Table */
-    .corp-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      border: 1px solid #94a3b8;
-    }
-
-    .corp-table th {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 10px 12px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      text-align: left;
-    }
-
-    .corp-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #cbd5e1;
-      font-size: 12px;
-      color: #334155;
-    }
-
-    .corp-table tr:nth-child(even) {
-      background: #f8fafc;
-    }
-
+    @page { size: A4; margin: 15mm 14mm 15mm 14mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: #1e293b; background: #ffffff; font-size: 12px; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .top-bar { background: #0f172a; color: #ffffff; padding: 18px 24px; border-bottom: 4px solid #d97706; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .top-company { font-family: 'Merriweather', serif; font-size: 20px; font-weight: 700; }
+    .top-meta { text-align: right; font-size: 11px; color: #cbd5e1; }
+    .top-id { font-size: 14px; font-weight: 700; color: #fbbf24; margin-bottom: 2px; }
+    h2, h3, h4 { font-family: 'Merriweather', serif; color: #0f172a; }
+    .doc-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+    .exec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    .exec-card { border: 1px solid #cbd5e1; padding: 12px 16px; background: #f8fafc; border-top: 3px solid #0f172a; }
+    .exec-card h4 { font-size: 10px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; }
+    .exec-name { font-size: 13.5px; font-weight: 700; color: #0f172a; }
+    .callout { border-left: 4px solid #0f172a; background: #f1f5f9; padding: 12px 16px; margin-bottom: 18px; font-size: 12px; font-style: italic; }
+    .section-heading { font-size: 13px; font-weight: 700; border-bottom: 2px solid #0f172a; padding-bottom: 4px; margin: 18px 0 10px 0; text-transform: uppercase; }
+    .corp-table { width: 100%; border-collapse: collapse; margin-top: 8px; border: 1px solid #94a3b8; }
+    .corp-table th { background: #0f172a; color: #ffffff; padding: 8px 10px; font-size: 10.5px; text-transform: uppercase; text-align: left; }
+    .corp-table td { padding: 8px 10px; border-bottom: 1px solid #cbd5e1; font-size: 11.5px; }
+    .corp-table tr:nth-child(even) { background: #f8fafc; }
     .text-right { text-align: right; }
     .text-center { text-align: center; }
-
-    /* Totals */
-    .totals-wrapper {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 14px;
-    }
-
-    .corp-totals {
-      width: 300px;
-      border: 1px solid #94a3b8;
-      background: #f8fafc;
-      padding: 12px 16px;
-    }
-
-    .corp-total-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 4px 0;
-      font-size: 12px;
-      color: #475569;
-    }
-
-    .corp-grand {
-      border-top: 2px solid #0f172a;
-      margin-top: 6px;
-      padding-top: 8px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    /* Milestones */
-    .corp-milestones {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    .corp-milestones td, .corp-milestones th {
-      border: 1px solid #e2e8f0;
-      padding: 8px 12px;
-      font-size: 12px;
-    }
-
-    .corp-milestones th {
-      background: #f1f5f9;
-      font-weight: 700;
-    }
-
-    /* Legal Terms */
-    .terms-text {
-      font-size: 11px;
-      color: #64748b;
-      line-height: 1.6;
-      border: 1px solid #e2e8f0;
-      padding: 12px;
-      background: #fafaf9;
-    }
-
-    /* Dual Signature */
-    .corp-sig {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 36px;
-      page-break-inside: avoid;
-    }
-
-    .sig-line-corp {
-      border-bottom: 1px solid #0f172a;
-      height: 35px;
-      margin-bottom: 6px;
-    }
+    .totals-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 12px; }
+    .bank-corp { border: 1px solid #94a3b8; background: #f8fafc; padding: 10px 14px; font-size: 11px; flex: 1; margin-right: 16px; }
+    .corp-totals { width: 280px; border: 1px solid #94a3b8; background: #f8fafc; padding: 10px 14px; }
+    .corp-total-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11.5px; color: #475569; }
+    .corp-grand { border-top: 2px solid #0f172a; margin-top: 6px; padding-top: 6px; font-size: 14px; font-weight: 700; color: #0f172a; }
+    .corp-sig { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; page-break-inside: avoid; }
+    .sig-line-corp { border-bottom: 1px solid #0f172a; height: 30px; margin-bottom: 4px; }
   </style>
 </head>
 <body>
-  <!-- Top Bar -->
   <div class="top-bar">
     <div>
       <div class="top-company">{{ proposal.sender_company }}</div>
-      <div style="font-size: 11px; color: #94a3b8; margin-top: 3px;">Corporate Advisory & Engineering Services</div>
+      <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">{{ proposal.sender_address }}</div>
+      <div style="font-size: 10px; color: #cbd5e1; font-weight: 600;">GSTIN: {{ proposal.sender_gstin }} | PAN: {{ proposal.sender_pan }}</div>
     </div>
     <div class="top-meta">
-      <div class="top-id">{{ proposal.id }}</div>
-      <div>Issuance: {{ proposal.created_date or 'November 05, 2026' }}</div>
-      <div>Valid Until: {{ proposal.valid_until or 'December 05, 2026' }}</div>
+      <div class="top-id">{{ proposal.id }} (v{{ proposal.version or 1 }})</div>
+      <div>Issuance: {{ proposal.created_date }}</div>
+      <div>Valid Until: {{ proposal.valid_until }}</div>
     </div>
   </div>
 
-  <div class="doc-title-section">
-    <div class="doc-title">{{ proposal.title }}</div>
-    <div class="doc-subtitle">Formal Enterprise Commercial Proposal & Statements of Work</div>
-  </div>
+  <div class="doc-title">{{ proposal.title }}</div>
 
-  <!-- Parties -->
   <div class="exec-grid">
     <div class="exec-card">
       <h4>Client Organization</h4>
       <div class="exec-name">{{ proposal.client_company }}</div>
-      <div class="exec-sub">Attn: {{ proposal.client_name or 'Commercial Delegate' }}</div>
-      <div class="exec-sub">{{ proposal.client_email }}</div>
-      {% if proposal.client_phone %}<div class="exec-sub">{{ proposal.client_phone }}</div>{% endif %}
+      <div style="font-size: 11px; color: #475569;">Attn: {{ proposal.client_name or 'Rahul Sharma' }}</div>
+      <div style="font-size: 11px; color: #475569;">{{ proposal.client_email }}</div>
+      {% if proposal.client_gstin %}<div style="font-size: 11px; color: #475569;">GSTIN: {{ proposal.client_gstin }}</div>{% endif %}
     </div>
     <div class="exec-card">
       <h4>Service Provider</h4>
       <div class="exec-name">{{ proposal.sender_company }}</div>
-      <div class="exec-sub">Account Exec: {{ proposal.sender_name or 'Sarah Jenkins' }}</div>
-      <div class="exec-sub">{{ proposal.sender_email }}</div>
-      <div class="exec-sub">{{ proposal.sender_phone or '+1 (800) 555-0199' }}</div>
+      <div style="font-size: 11px; color: #475569;">Solutions Lead: {{ proposal.sender_name }}</div>
+      <div style="font-size: 11px; color: #475569;">{{ proposal.sender_email }} &bull; {{ proposal.sender_phone }}</div>
     </div>
   </div>
 
-  <!-- Executive Summary -->
-  <div class="section-heading">I. Executive Strategic Summary</div>
-  <div class="callout">
-    "{{ proposal.project_overview }}"
-  </div>
+  <div class="section-heading">I. Executive Summary</div>
+  <div class="callout">"{{ proposal.project_overview }}"</div>
 
-  <!-- Scope & Deliverables -->
-  <div class="section-heading">II. Authorized Scope & Deliverables</div>
-  {% if proposal.scope_of_work %}
-  <p style="margin-bottom: 12px; font-size: 12.5px; color: #334155;">{{ proposal.scope_of_work }}</p>
-  {% endif %}
-  <div class="deliv-grid">
+  <div class="section-heading">II. Scope of Work & Deliverables</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
     {% for item in proposal.deliverables %}
-    <div class="deliv-box">
-      {% if item is string %}
-      <div class="deliv-title">Deliverable {{ loop.index }}</div>
-      <div style="color: #475569; font-size: 12px;">{{ item }}</div>
-      {% else %}
-      <div class="deliv-title">{{ item.title or item.name }}</div>
-      <div style="color: #475569; font-size: 12px;">{{ item.description or item.details }}</div>
-      {% endif %}
+    <div style="border: 1px solid #e2e8f0; padding: 8px 10px; background: #ffffff;">
+      <strong style="font-size: 11px; color: #0f172a;">{{ item.title or item.name }}</strong>
+      <div style="font-size: 10.5px; color: #475569;">{{ item.description or item.details }}</div>
     </div>
     {% endfor %}
   </div>
 
-  <!-- Timeline -->
-  {% if proposal.timeline_milestones %}
-  <div class="section-heading">III. Project Milestones & Delivery Schedule</div>
-  <table class="corp-milestones">
-    <thead>
-      <tr>
-        <th style="width: 20%;">Phase</th>
-        <th style="width: 30%;">Milestone Name</th>
-        <th style="width: 20%;">Estimated Duration</th>
-        <th style="width: 30%;">Deliverables / Signoff Criteria</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for m in proposal.timeline_milestones %}
-      <tr>
-        <td><strong>{{ m.phase or 'Phase ' ~ loop.index }}</strong></td>
-        <td>{{ m.title }}</td>
-        <td>{{ m.duration }}</td>
-        <td>{{ m.deliverables }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
-
-  <!-- Commercial Schedule -->
-  <div class="section-heading">IV. Schedule of Rates & Total Investment</div>
+  <div class="section-heading">III. Investment Schedule & GST Breakdown (₹ INR)</div>
   <table class="corp-table">
     <thead>
       <tr>
-        <th style="width: 50%;">Professional Service Description</th>
-        <th class="text-center" style="width: 14%;">Quantity</th>
-        <th class="text-right" style="width: 18%;">Unit Rate</th>
-        <th class="text-right" style="width: 18%;">Amount ({{ proposal.currency }})</th>
+        <th style="width: 52%;">Service Description</th>
+        <th class="text-center" style="width: 14%;">Qty</th>
+        <th class="text-right" style="width: 16%;">Unit Rate (₹)</th>
+        <th class="text-right" style="width: 18%;">Amount (₹ INR)</th>
       </tr>
     </thead>
     <tbody>
@@ -373,58 +95,50 @@
       <tr>
         <td>
           <strong>{{ item.name }}</strong>
-          {% if item.description %}<div style="font-size: 11px; color: #64748b;">{{ item.description }}</div>{% endif %}
+          {% if item.description %}<div style="font-size: 10px; color: #64748b;">{{ item.description }}</div>{% endif %}
         </td>
         <td class="text-center">{{ item.quantity }} {{ item.unit_type }}</td>
-        <td class="text-right">${{ "{:,.2f}".format(item.unit_price) }}</td>
-        <td class="text-right" style="font-weight: 700;">${{ "{:,.2f}".format(item.total) }}</td>
+        <td class="text-right">₹{{ "{:,.2f}".format(item.unit_price) }}</td>
+        <td class="text-right" style="font-weight: 700;">₹{{ "{:,.2f}".format(item.total) }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  <!-- Totals -->
   <div class="totals-wrapper">
+    <div class="bank-corp">
+      <strong>Payment & NEFT Bank Coordinates:</strong><br>
+      A/C Name: {{ proposal.sender_company }}<br>
+      Bank: HDFC Bank Ltd., Madhapur Branch, Hyderabad<br>
+      Account: 50200012345678 | IFSC: HDFC0001234
+    </div>
     <div class="corp-totals">
-      <div class="corp-total-row">
-        <span>Contract Subtotal:</span>
-        <span>${{ "{:,.2f}".format(proposal.subtotal) }}</span>
-      </div>
+      <div class="corp-total-row"><span>Contract Subtotal:</span><span>₹{{ "{:,.2f}".format(proposal.subtotal) }}</span></div>
       {% if proposal.discount_percent and proposal.discount_percent > 0 %}
-      <div class="corp-total-row" style="color: #b45309;">
-        <span>Corporate Discount ({{ proposal.discount_percent }}%):</span>
-        <span>-${{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span>
-      </div>
+      <div class="corp-total-row" style="color: #b45309;"><span>Corporate Discount ({{ proposal.discount_percent }}%):</span><span>-₹{{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span></div>
       {% endif %}
-      <div class="corp-total-row">
-        <span>Applicable Taxes ({{ proposal.tax_percent }}%):</span>
-        <span>${{ "{:,.2f}".format(proposal.tax_amount) }}</span>
-      </div>
-      <div class="corp-total-row corp-grand">
-        <span>Total Contract Value:</span>
-        <span>${{ "{:,.2f}".format(proposal.total_amount) }}</span>
-      </div>
+      <div class="corp-total-row"><span>CGST (9%):</span><span>₹{{ "{:,.2f}".format(proposal.cgst_amount or proposal.tax_amount / 2.0) }}</span></div>
+      <div class="corp-total-row"><span>SGST (9%):</span><span>₹{{ "{:,.2f}".format(proposal.sgst_amount or proposal.tax_amount / 2.0) }}</span></div>
+      <div class="corp-total-row corp-grand"><span>Total Contract Value:</span><span>₹{{ "{:,.2f}".format(proposal.total_amount) }}</span></div>
     </div>
   </div>
 
-  <!-- Terms -->
-  <div class="section-heading">V. Payment Schedule & Legal Provisions</div>
-  <div class="terms-text">
-    <strong>Billing Terms:</strong> {{ proposal.payment_terms or '30% Upon Kickoff, 40% Mid-Project Milestone, 30% Final Delivery & Acceptance' }}<br><br>
-    <strong>General Provisions:</strong> {{ proposal.terms_and_conditions or 'Proposals are valid for 30 calendar days from issuance. Changes in scope will be handled through written change orders.' }}
+  <div class="section-heading">IV. Payment Terms & Contract Conditions</div>
+  <div style="font-size: 10.5px; color: #64748b; line-height: 1.5; background: #fafaf9; border: 1px solid #e2e8f0; padding: 10px;">
+    <strong>Payment Milestones:</strong> {{ proposal.payment_terms }}<br>
+    <strong>Jurisdiction:</strong> Hyderabad, Telangana courts only.
   </div>
 
-  <!-- Signatures -->
   <div class="corp-sig">
     <div>
       <div class="sig-line-corp"></div>
-      <div style="font-weight: 700; font-size: 12px;">Authorized Signature for {{ proposal.client_company }}</div>
-      <div style="font-size: 11px; color: #64748b;">Title: ___________________________ Date: _________</div>
+      <div style="font-weight: 700; font-size: 11px;">Authorized Signatory for {{ proposal.client_company }}</div>
+      <div style="font-size: 10px; color: #64748b;">Title: ___________________________ Date: _________</div>
     </div>
     <div>
       <div class="sig-line-corp"></div>
-      <div style="font-weight: 700; font-size: 12px;">Authorized Signature for {{ proposal.sender_company }}</div>
-      <div style="font-size: 11px; color: #64748b;">Title: Solutions Director &nbsp;&nbsp;&nbsp;&nbsp; Date: {{ proposal.created_date or 'November 05, 2026' }}</div>
+      <div style="font-weight: 700; font-size: 11px;">Authorized Signatory for {{ proposal.sender_company }}</div>
+      <div style="font-size: 10px; color: #64748b;">Title: Solutions Director &nbsp;|&nbsp; Date: {{ proposal.created_date }}</div>
     </div>
   </div>
 </body>

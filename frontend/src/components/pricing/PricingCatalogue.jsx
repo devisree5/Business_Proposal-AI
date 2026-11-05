@@ -16,7 +16,7 @@ export default function PricingCatalogue() {
   const [formName, setFormName] = useState('');
   const [formCategory, setFormCategory] = useState('Software Engineering');
   const [formUnitType, setFormUnitType] = useState('fixed');
-  const [formRate, setFormRate] = useState(1500);
+  const [formRate, setFormRate] = useState(25000);
   const [formDesc, setFormDesc] = useState('');
   const [formKeywords, setFormKeywords] = useState('');
 
@@ -189,7 +189,7 @@ export default function PricingCatalogue() {
                     </td>
                     <td className="p-4 text-center font-medium text-slate-600">{item.unit_type}</td>
                     <td className="p-4 text-right font-bold text-slate-900">
-                      ${(item.default_rate || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      ₹{(item.default_rate || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </td>
                     <td className="p-4 max-w-xs">
                       <div className="flex flex-wrap gap-1">
@@ -283,7 +283,7 @@ export default function PricingCatalogue() {
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Default Rate ($) *</label>
+                  <label className="font-bold text-slate-700 block mb-1">Default Rate (₹ INR) *</label>
                   <input
                     type="number"
                     required

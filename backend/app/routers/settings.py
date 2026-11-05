@@ -12,6 +12,10 @@ class SettingsPayload(BaseModel):
     company_phone: Optional[str] = None
     company_address: Optional[str] = None
     company_website: Optional[str] = None
+    company_gstin: Optional[str] = None
+    company_pan: Optional[str] = None
+    company_bank_account: Optional[str] = None
+    company_bank_ifsc: Optional[str] = None
 
 @router.get("")
 def get_system_settings():
@@ -23,7 +27,8 @@ def get_system_settings():
         },
         "gmail": {
             "is_configured": bool(settings.GMAIL_CLIENT_ID and settings.GMAIL_CLIENT_SECRET),
-            "client_id_set": bool(settings.GMAIL_CLIENT_ID)
+            "client_id_set": bool(settings.GMAIL_CLIENT_ID),
+            "sales_account": settings.GMAIL_SENDER_EMAIL
         },
         "imap": {
             "is_configured": bool(settings.IMAP_HOST and settings.IMAP_USER),
@@ -39,7 +44,12 @@ def get_system_settings():
             "email": settings.COMPANY_EMAIL,
             "phone": settings.COMPANY_PHONE,
             "address": settings.COMPANY_ADDRESS,
-            "website": settings.COMPANY_WEBSITE
+            "website": settings.COMPANY_WEBSITE,
+            "gstin": settings.COMPANY_GSTIN,
+            "pan": settings.COMPANY_PAN,
+            "bank_name": settings.COMPANY_BANK_NAME,
+            "bank_account": settings.COMPANY_BANK_ACCOUNT,
+            "bank_ifsc": settings.COMPANY_BANK_IFSC
         }
     }
 
@@ -66,5 +76,13 @@ def update_system_settings(payload: SettingsPayload):
         settings.COMPANY_ADDRESS = payload.company_address
     if payload.company_website:
         settings.COMPANY_WEBSITE = payload.company_website
+    if payload.company_gstin:
+        settings.COMPANY_GSTIN = payload.company_gstin
+    if payload.company_pan:
+        settings.COMPANY_PAN = payload.company_pan
+    if payload.company_bank_account:
+        settings.COMPANY_BANK_ACCOUNT = payload.company_bank_account
+    if payload.company_bank_ifsc:
+        settings.COMPANY_BANK_IFSC = payload.company_bank_ifsc
 
     return {"success": True, "message": "Settings updated successfully"}

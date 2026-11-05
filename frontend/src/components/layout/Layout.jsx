@@ -1,15 +1,14 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import DashboardView from '../dashboard/DashboardView';
-import EmailInbox from '../emails/EmailInbox';
+import SalesInbox from '../inbox/SalesInbox';
+import FollowUpReminders from '../inbox/FollowUpReminders';
 import ProposalList from '../proposals/ProposalList';
 import ProposalEditor from '../editor/ProposalEditor';
 import PricingCatalogue from '../pricing/PricingCatalogue';
 import SettingsView from '../settings/SettingsView';
-import HistoryView from './HistoryView';
 import { useApp } from '../../context/AppContext';
-import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info } from 'lucide-react';
 
 export default function Layout() {
   const { activeTab, toast } = useApp();
@@ -23,14 +22,14 @@ export default function Layout() {
       <div className="flex-1 flex flex-col min-w-0">
         <Header />
 
-        <main className="flex-1 p-8 overflow-y-auto">
-          {activeTab === 'dashboard' && <DashboardView />}
-          {activeTab === 'emails' && <EmailInbox />}
+        <main className="flex-1 p-6 overflow-y-auto">
+          {(activeTab === 'inbox' || !activeTab) && <SalesInbox />}
           {activeTab === 'proposals' && <ProposalList />}
+          {activeTab === 'sent' && <ProposalList initialStatus="sent" />}
+          {activeTab === 'followups' && <FollowUpReminders />}
           {activeTab === 'editor' && <ProposalEditor />}
           {activeTab === 'pricing' && <PricingCatalogue />}
           {activeTab === 'settings' && <SettingsView />}
-          {activeTab === 'history' && <HistoryView />}
         </main>
       </div>
 

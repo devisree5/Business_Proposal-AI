@@ -14,8 +14,8 @@ class ExtractedRequirement(BaseModel):
     unit: Optional[str] = "unit"
 
 class AIAnalysisResult(BaseModel):
-    client_name: Optional[str] = "Prospective Client"
-    client_company: str
+    client_name: Optional[str] = "Rahul Sharma"
+    client_company: str = "ABC Solutions Pvt. Ltd."
     contact: ExtractedContact
     project_name: str
     project_description: str
@@ -25,6 +25,8 @@ class AIAnalysisResult(BaseModel):
     budget: Optional[str] = None
     additional_requirements: List[str] = []
     missing_information: List[str] = []
+    lead_priority: str = "High" # High, Medium, Low
+    priority_rationale: str = "Clear 6-feature scope with 60-day deadline from corporate entity"
     confidence_score: float = 0.95
     ai_model_used: str = "Gemini 1.5 Pro"
 

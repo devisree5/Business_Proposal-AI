@@ -5,15 +5,13 @@ import {
   Download, 
   Send, 
   FileText, 
-  Eye, 
   Sparkles, 
   Building, 
-  DollarSign, 
+  IndianRupee, 
   Calendar, 
   ShieldCheck, 
   ListChecks, 
-  Check, 
-  Layers,
+  GitBranch,
   Printer
 } from 'lucide-react';
 import { api } from '../../services/api';
@@ -28,55 +26,73 @@ import LiveDocumentPreview from './LiveDocumentPreview';
 import SendProposalModal from './SendProposalModal';
 
 export default function ProposalEditor() {
-  const { currentProposal, setCurrentProposal, setActiveTab, showToast, loadDashboard } = useApp();
+  const { currentProposal, setCurrentProposal, setActiveTab, showToast, loadProposals, loadEmails } = useApp();
 
-  // If no proposal is loaded, fetch latest or create a default proposal
   const [proposal, setProposal] = useState(currentProposal || {
     id: 'PR-2025-001',
+    version: 1,
     template_id: 'modern',
-    title: 'Enterprise Commercial Proposal',
-    status: 'draft',
-    client_name: 'Marcus Vance',
-    client_company: 'Acme Corporation',
-    client_email: 'marcus.vance@acmecorp.com',
-    client_phone: '+1 (415) 882-9011',
-    client_address: '500 Market Street, San Francisco, CA',
-    sender_company: 'ProposalGen Solutions Inc.',
-    sender_name: 'Sarah Jenkins',
-    sender_email: 'sarah.jenkins@proposalgen.ai',
-    sender_phone: '+1 (800) 555-0199',
-    sender_address: '100 Innovation Way, Suite 400, San Francisco, CA 94107',
+    title: 'E-commerce Website Development Proposal',
+    status: 'generated',
+    client_name: 'Rahul Sharma',
+    client_company: 'ABC Solutions Pvt. Ltd.',
+    client_email: 'rahul@abcsolutions.in',
+    client_phone: '+91 98765 43210',
+    client_address: 'Hitec City, Hyderabad, Telangana',
+    client_gstin: '36AABCA1234E1Z1',
+    sender_company: 'Nexura Technologies Pvt. Ltd.',
+    sender_name: 'Anya Sharma',
+    sender_email: 'anyaforgerrrr345@gmail.com',
+    sender_phone: '+91 40 4859 2100',
+    sender_address: 'Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081',
+    sender_gstin: '36AAACN1234F1Z5',
+    sender_pan: 'AAACN1234F',
+    bank_name: 'HDFC Bank Ltd.',
+    bank_account: '50200012345678',
+    bank_ifsc: 'HDFC0001234',
+    bank_branch: 'Madhapur Branch, Hyderabad',
     accent_color: '#2563eb',
-    created_date: 'November 05, 2026',
-    valid_until: 'December 05, 2026',
-    currency: 'USD',
-    project_overview: 'Comprehensive digital infrastructure upgrade and professional software licensing provisioned for Acme Corporation with multi-region AWS cloud setup, security audit, and 24/7 SLA.',
-    scope_of_work: 'Complete turnkey execution including environment staging, directory sync, SSO integration, security hardening, and staff onboarding.',
+    created_date: new Date().toLocaleDateString('en-GB'),
+    valid_until: new Date(Date.now() + 30 * 86400000).toLocaleDateString('en-GB'),
+    currency: 'INR',
+    currency_symbol: '₹',
+    project_overview: 'End-to-end custom e-commerce web platform engineered for ABC Solutions Pvt. Ltd., incorporating secure customer registration, dynamic product catalog, shopping cart, Indian payment gateway integration (Razorpay / UPI), admin dashboard, and real-time order tracking within 60 days.',
+    scope_of_work: 'Complete development across 6 core modules: customer auth, catalog with search, cart/checkout, payment integration, admin console, and order dispatch tracking.',
     deliverables: [
-      { title: 'Enterprise Licenses', description: '500 active user seats with SAML SSO integration' },
-      { title: 'Cloud Infrastructure', description: 'Multi-region AWS cloud topology orchestration via Terraform' },
-      { title: 'Security Audit', description: 'SOC2/GDPR compliance verification and penetration assessment' }
+      { title: 'Customer Registration & Auth', description: 'OTP and email based secure registration and customer profile management' },
+      { title: 'Dynamic Product Catalogue', description: 'Rich product listing with categories, filters, variants, and search indexing' },
+      { title: 'Cart & Checkout Engine', description: 'Optimized shopping cart with coupon support and multi-step checkout' },
+      { title: 'Payment Gateway Integration', description: 'Razorpay & Paytm integration supporting UPI, Credit/Debit cards, and Netbanking' },
+      { title: 'Admin Dashboard', description: 'Comprehensive order fulfillment, stock management, and sales reporting' },
+      { title: 'Order Tracking & Alerts', description: 'Real-time dispatch tracking with automated customer notification status' }
     ],
     timeline_milestones: [
-      { phase: 'Phase 1', title: 'Architecture & Discovery', duration: 'Weeks 1-2', deliverables: 'Kickoff and specifications blueprint' },
-      { phase: 'Phase 2', title: 'Cloud Implementation', duration: 'Weeks 3-4', deliverables: 'Environment deployment and testing' },
-      { phase: 'Phase 3', title: 'Security Audit & Rollout', duration: 'Weeks 5-6', deliverables: 'Penetration verification and team handover' }
+      { phase: 'Phase 1', title: 'Discovery & UI/UX Wireframing', duration: 'Days 1-15', deliverables: 'Figma wireframes, DB schema and technical sign-off' },
+      { phase: 'Phase 2', title: 'Storefront & Customer Catalog', duration: 'Days 16-35', deliverables: 'Product catalog, search filters, cart & customer login' },
+      { phase: 'Phase 3', title: 'Payment & Admin Dashboard', duration: 'Days 36-50', deliverables: 'Razorpay integration, order tracking & admin console' },
+      { phase: 'Phase 4', title: 'QA Testing & Production Launch', duration: 'Days 51-60', deliverables: 'End-to-end testing, SSL configuration & live deployment' }
     ],
     line_items: [
-      { id: 'item-1', name: 'Enterprise Professional License', description: '500 user seat pack', unit_type: 'per_user', quantity: 50.0, unit_price: 240.0, total: 12000.0, matched_service_id: 'LIC-ENT', is_custom: false },
-      { id: 'item-2', name: 'Cloud Infrastructure & High-Availability Architecture', description: 'AWS redundant topology', unit_type: 'fixed', quantity: 1.0, unit_price: 6500.0, total: 6500.0, matched_service_id: 'CLD-ARCH', is_custom: false },
-      { id: 'item-3', name: 'Enterprise Security Audit & Compliance Assessment', description: 'Full penetration scan', unit_type: 'fixed', quantity: 1.0, unit_price: 4500.0, total: 4500.0, matched_service_id: 'SEC-AUDIT', is_custom: false }
+      { id: 'item-1', name: 'Website development', description: 'Custom responsive e-commerce web platform', unit_type: 'fixed', quantity: 1.0, unit_price: 50000.0, total: 50000.0, matched_service_id: 'WEB-DEV', is_custom: false },
+      { id: 'item-2', name: 'Admin dashboard', description: 'Backend administrative dashboard for order tracking', unit_type: 'fixed', quantity: 1.0, unit_price: 15000.0, total: 15000.0, matched_service_id: 'ADMIN-DASH', is_custom: false },
+      { id: 'item-3', name: 'Payment integration', description: 'Razorpay / Paytm / UPI gateway integration', unit_type: 'fixed', quantity: 1.0, unit_price: 8000.0, total: 8000.0, matched_service_id: 'PAY-INT', is_custom: false },
+      { id: 'item-4', name: 'Testing and deployment', description: 'QA testing, SSL setup, and cloud deployment', unit_type: 'fixed', quantity: 1.0, unit_price: 7000.0, total: 7000.0, matched_service_id: 'QA-DEPLOY', is_custom: false }
     ],
-    subtotal: 23000.0,
-    discount_percent: 5.0,
-    tax_percent: 10.0,
-    tax_amount: 2185.0,
-    total_amount: 24035.0,
-    payment_terms: '30% Upon Kickoff, 40% Mid-Project Milestone, 30% Final Delivery & Acceptance',
-    terms_and_conditions: 'This proposal is valid for 30 calendar days from the date of issue. Changes in scope will be handled through written change orders.'
+    subtotal: 80000.0,
+    discount_percent: 0.0,
+    discount_amount: 0.0,
+    gst_rate: 18.0,
+    is_interstate: false,
+    cgst_amount: 7200.0,
+    sgst_amount: 7200.0,
+    igst_amount: 0.0,
+    tax_amount: 14400.0,
+    total_amount: 94400.0,
+    payment_terms: '50% Advance with Purchase Order (₹47,200), 30% upon UAT deployment (₹28,320), 20% upon final sign-off (₹18,880).',
+    terms_and_conditions: '1. Proposal valid for 30 calendar days from issuance.\n2. Scope adjustments handled via written Change Request.\n3. Source code ownership transferred to client upon 100% final settlement.\n4. Dispute jurisdiction subject to Hyderabad courts only.'
   });
 
-  const [activeSection, setActiveSection] = useState('general');
+  const [activeSection, setActiveSection] = useState('pricing'); // Default to pricing as requested!
   const [isSaving, setIsSaving] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [sendModalOpen, setSendModalOpen] = useState(false);
@@ -96,18 +112,11 @@ export default function ProposalEditor() {
   const handleSaveProposal = async () => {
     setIsSaving(true);
     try {
-      if (proposal.id && proposal.id.startsWith('PR-')) {
-        const saved = await api.updateProposal(proposal.id, proposal);
-        setProposal(saved);
-        setCurrentProposal(saved);
-        showToast('Proposal saved successfully!');
-      } else {
-        const created = await api.createProposal(proposal);
-        setProposal(created);
-        setCurrentProposal(created);
-        showToast(`Proposal #${created.id} created successfully!`);
-      }
-      loadDashboard();
+      const saved = await api.updateProposal(proposal.id, proposal);
+      setProposal(saved);
+      setCurrentProposal(saved);
+      showToast('Proposal changes saved successfully!');
+      loadProposals();
     } catch (e) {
       showToast(e.message || 'Failed to save proposal', 'error');
     } finally {
@@ -115,15 +124,28 @@ export default function ProposalEditor() {
     }
   };
 
+  // Proposal Version Tracking: creates v2, preserving v1
+  const handleCreateRevision = async () => {
+    if (!window.confirm(`Create a new revision (v${(proposal.version || 1) + 1}) for this proposal? The current version will remain preserved in history.`)) return;
+    try {
+      showToast('Branching proposal version...', 'info');
+      const revised = await api.reviseProposal(proposal.id);
+      setProposal(revised);
+      setCurrentProposal(revised);
+      showToast(`Revision ${revised.id} (v${revised.version}) created!`);
+      loadProposals();
+    } catch (e) {
+      showToast(e.message || 'Failed to create revision', 'error');
+    }
+  };
+
   const handleDownloadPDF = async () => {
     setIsDownloading(true);
-    showToast('Rendering high-definition vector PDF with Playwright...', 'info');
+    showToast('Rendering high-definition vector PDF with Playwright in INR...', 'info');
     try {
-      // First ensure latest updates are saved
       await api.updateProposal(proposal.id, proposal);
       const res = await api.generatePDF(proposal.id, proposal.template_id);
       
-      // Trigger download
       const link = document.createElement('a');
       link.href = `/api/proposals/${proposal.id}/download-pdf`;
       link.download = `${proposal.id}_Proposal.pdf`;
@@ -133,7 +155,7 @@ export default function ProposalEditor() {
 
       showToast('PDF downloaded successfully!');
     } catch (e) {
-      console.warn('Backend PDF download error, attempting browser print fallback', e);
+      console.warn('PDF download fallback to browser print', e);
       window.print();
     } finally {
       setIsDownloading(false);
@@ -145,18 +167,18 @@ export default function ProposalEditor() {
   };
 
   const sections = [
-    { id: 'general', label: '1. General & Parties', icon: Building },
-    { id: 'overview', label: '2. Overview & Scope', icon: FileText },
-    { id: 'deliverables', label: '3. Deliverables', icon: ListChecks },
-    { id: 'pricing', label: '4. Pricing & Rates', icon: DollarSign, badge: proposal.line_items?.length },
-    { id: 'timeline', label: '5. Timeline & Milestones', icon: Calendar },
-    { id: 'terms', label: '6. Terms & Signatures', icon: ShieldCheck },
+    { id: 'pricing', label: '1. Pricing & GST (₹)', icon: IndianRupee, badge: proposal.line_items?.length },
+    { id: 'general', label: '2. Client & GSTIN Details', icon: Building },
+    { id: 'overview', label: '3. Scope & Objectives', icon: FileText },
+    { id: 'deliverables', label: '4. Module Deliverables', icon: ListChecks },
+    { id: 'timeline', label: '5. 60-Day Timeline', icon: Calendar },
+    { id: 'terms', label: '6. Indian Commercial Terms', icon: ShieldCheck },
   ];
 
   const templates = [
-    { id: 'modern', label: 'Modern Business' },
+    { id: 'modern', label: 'Modern Tech' },
     { id: 'corporate', label: 'Corporate Elegance' },
-    { id: 'minimal', label: 'Minimal Style' },
+    { id: 'minimal', label: 'Minimal Swiss' },
   ];
 
   return (
@@ -165,43 +187,43 @@ export default function ProposalEditor() {
       <div className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 shadow-xs z-10">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setActiveTab('proposals')}
+            onClick={() => setActiveTab('inbox')}
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Proposals</span>
+            <span>Sales Inbox</span>
           </button>
 
           <div className="h-4 w-px bg-slate-200" />
 
           <div className="flex items-center gap-2.5">
             <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-              {proposal.id || 'PR-DRAFT'}
+              {proposal.id || 'PR-2025-001'} (v{proposal.version || 1})
             </span>
             <input
               type="text"
               value={proposal.title || ''}
               onChange={(e) => handleFieldChange('title', e.target.value)}
-              className="font-bold text-sm text-slate-900 hover:bg-slate-50 focus:bg-white px-2 py-1 rounded outline-none border border-transparent focus:border-blue-500 w-72 truncate"
+              className="font-bold text-sm text-slate-900 hover:bg-slate-50 focus:bg-white px-2 py-1 rounded outline-none border border-transparent focus:border-blue-500 w-80 truncate"
               placeholder="Proposal Title"
             />
           </div>
 
           {/* Status selector */}
           <select
-            value={proposal.status || 'draft'}
+            value={proposal.status || 'generated'}
             onChange={(e) => handleFieldChange('status', e.target.value)}
             className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 outline-none cursor-pointer"
           >
             <option value="draft">Draft</option>
-            <option value="generated">Generated</option>
-            <option value="sent">Sent</option>
-            <option value="accepted">Accepted</option>
+            <option value="generated">Proposal Ready</option>
+            <option value="sent">Sent via Gmail</option>
+            <option value="accepted">Accepted / Won</option>
             <option value="declined">Declined</option>
           </select>
         </div>
 
-        {/* Template Switcher & Action Buttons */}
+        {/* Actions Bar */}
         <div className="flex items-center gap-3">
           {/* Template pills */}
           <div className="hidden xl:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
@@ -220,11 +242,21 @@ export default function ProposalEditor() {
             ))}
           </div>
 
+          {/* Create Revision (Version Tracking) */}
+          <button
+            onClick={handleCreateRevision}
+            className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors border border-slate-200"
+            title="Create new proposal revision while preserving v1"
+          >
+            <GitBranch className="w-3.5 h-3.5 text-purple-600" />
+            <span>Revise (v{(proposal.version || 1) + 1})</span>
+          </button>
+
           {/* Save Button */}
           <button
             onClick={handleSaveProposal}
             disabled={isSaving}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors border border-slate-200/80"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors border border-slate-200"
           >
             <Save className="w-3.5 h-3.5" />
             <span>{isSaving ? 'Saving...' : 'Save Draft'}</span>
@@ -240,20 +272,20 @@ export default function ProposalEditor() {
             <span>{isDownloading ? 'Rendering PDF...' : 'Download PDF'}</span>
           </button>
 
-          {/* Send to Client */}
+          {/* Screen 4: Send via Gmail API */}
           <button
             onClick={() => setSendModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/25 transition-all hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/25 transition-all hover:scale-105 active:scale-100"
           >
             <Send className="w-3.5 h-3.5" />
-            <span>Send to Client</span>
+            <span>Send to Client via Gmail</span>
           </button>
         </div>
       </div>
 
-      {/* Editor Main Content: Split 50/50 */}
+      {/* Editor Split 50/50 */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
-        {/* Left Half: Tabbed Section Editor (6 cols) */}
+        {/* Left Half: Section Builder (6 cols) */}
         <div className="lg:col-span-6 flex flex-col h-full border-r border-slate-200 bg-slate-50 overflow-hidden">
           {/* Section Navigation Tabs */}
           <div className="flex items-center gap-1 px-4 py-2.5 bg-white border-b border-slate-200 overflow-x-auto text-xs shrink-0">
@@ -279,6 +311,9 @@ export default function ProposalEditor() {
 
           {/* Active Section Form Container */}
           <div className="flex-1 overflow-y-auto p-6">
+            {activeSection === 'pricing' && (
+              <SectionPricing proposal={proposal} onChange={handleFieldChange} />
+            )}
             {activeSection === 'general' && (
               <SectionGeneral proposal={proposal} onChange={handleFieldChange} />
             )}
@@ -287,9 +322,6 @@ export default function ProposalEditor() {
             )}
             {activeSection === 'deliverables' && (
               <SectionDeliverables proposal={proposal} onChange={handleFieldChange} />
-            )}
-            {activeSection === 'pricing' && (
-              <SectionPricing proposal={proposal} onChange={handleFieldChange} />
             )}
             {activeSection === 'timeline' && (
               <SectionTimeline proposal={proposal} onChange={handleFieldChange} />
@@ -300,7 +332,7 @@ export default function ProposalEditor() {
           </div>
         </div>
 
-        {/* Right Half: Live Document Sheet Preview (6 cols) */}
+        {/* Right Half: Live Document Sheet Preview in INR (6 cols) */}
         <div className="lg:col-span-6 h-full p-4 overflow-hidden">
           <LiveDocumentPreview
             proposal={proposal}
@@ -310,13 +342,15 @@ export default function ProposalEditor() {
         </div>
       </div>
 
-      {/* Send Proposal Modal */}
+      {/* Screen 4: Send Proposal Modal via Gmail API */}
       <SendProposalModal
         isOpen={sendModalOpen}
         onClose={() => setSendModalOpen(false)}
         proposal={proposal}
         onSent={(res) => {
           handleFieldChange('status', 'sent');
+          loadProposals();
+          loadEmails();
         }}
       />
     </div>

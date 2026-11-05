@@ -23,7 +23,7 @@ def get_pricing_catalogue(db: Session = Depends(get_db)):
 def create_pricing_service(payload: PricingServiceCreate, db: Session = Depends(get_db)):
     existing = db.query(PricingService).filter(PricingService.code == payload.code).first()
     if existing:
-        raise HTTPException(status_code=400, detail="A service with this code already exists")
+        raise HTTPException(status_code=400, detail="A service with this code already exists in catalogue")
     
     item = PricingService(**payload.model_dump())
     db.add(item)
@@ -35,11 +35,10 @@ def create_pricing_service(payload: PricingServiceCreate, db: Session = Depends(
 def update_pricing_service(service_id: str, payload: PricingServiceUpdate, db: Session = Depends(get_db)):
     item = db.query(PricingService).filter(PricingService.id == service_id).first()
     if not item:
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise HTTPException(status_code=404, detail="Catalogue service not found")
     
-    update_data = payload.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(item, key, value)
+    for key, val in payload.model_dump(exclude_unset=True).items():
+        setattr(item, key, val)
     
     db.commit()
     db.refresh(item)
@@ -56,6 +55,10 @@ def delete_pricing_service(service_id: str, db: Session = Depends(get_db)):
 
 @router.post("/match", response_model=PricingCalculationResponse)
 def match_requirements_pricing(payload: MatchRequirementsRequest, db: Session = Depends(get_db)):
+    """
+    Matches extracted requirements against catalogue items in INR.
+    Calculates subtotal, 18% GST (CGST/SGST/IGST), and total.
+    """
     req_dicts = [
         {
             "name": r.requirement_name,
@@ -65,13 +68,17 @@ def match_requirements_pricing(payload: MatchRequirementsRequest, db: Session = 
         }
         for r in payload.requirements
     ]
-    calc = pricing_manager.match_and_calculate_pricing(db, req_dicts)
+    calc = pricing_manager.match_and_calculate_pricing(
+        db,
+        requirements=req_dicts,
+        gst_rate=payload.gst_rate or 18.0,
+        is_interstate=payload.is_interstate or False
+    )
     
-    # Log calculation activity
     db.add(ActivityLog(
         action_type="pricing_calculated",
-        title=f"Pricing calculated: ${calc.total_amount:,.2f}",
-        description=f"Matched {len(calc.items)} requirement line items against catalogue",
+        title=f"Pricing calculated: ₹{calc.total_amount:,.2f} INR",
+        description=f"Matched {len(calc.items)} items with 18% GST",
         reference_id=None
     ))
     db.commit()

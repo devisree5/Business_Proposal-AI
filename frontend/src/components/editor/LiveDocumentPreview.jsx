@@ -7,10 +7,16 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
 
   const tpl = proposal.template_id || 'modern';
   const accent = proposal.accent_color || (tpl === 'corporate' ? '#0f172a' : tpl === 'minimal' ? '#18181b' : '#2563eb');
+  const curr = proposal.currency === 'USD' ? '$' : '₹';
 
   const formatCurrency = (val) => {
-    return (parseFloat(val) || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return (parseFloat(val) || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
+
+  const isInterstate = Boolean(proposal.is_interstate);
+  const cgst = proposal.cgst_amount ?? ((proposal.tax_amount || 0) / 2);
+  const sgst = proposal.sgst_amount ?? ((proposal.tax_amount || 0) / 2);
+  const igst = proposal.igst_amount ?? (proposal.tax_amount || 0);
 
   return (
     <div className="flex flex-col h-full bg-slate-200/70 rounded-2xl border border-slate-300/80 overflow-hidden shadow-inner">
@@ -21,6 +27,11 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 font-semibold uppercase tracking-wider">
             {tpl} template
           </span>
+          {proposal.version && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">
+              v{proposal.version}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -69,7 +80,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
           className="w-[210mm] min-h-[297mm] bg-white shadow-2xl p-[18mm] rounded-sm select-text text-slate-800 transition-all font-sans relative"
         >
           {/* ========================================================
-              TEMPLATE 1: MODERN BUSINESS
+              TEMPLATE 1: MODERN BUSINESS (₹ INR & Indian GST)
           ======================================================== */}
           {tpl === 'modern' && (
             <div className="space-y-6 text-[12px] leading-relaxed">
@@ -77,14 +88,15 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               <div className="flex items-start justify-between pb-4 border-b-2" style={{ borderColor: accent }}>
                 <div>
                   <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">{proposal.sender_company}</h1>
-                  <p className="text-[11px] text-slate-500 mt-0.5">{proposal.sender_address || 'Enterprise Solutions & Services'}</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{proposal.sender_address || 'Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081'}</p>
+                  <p className="text-[10px] text-slate-400 font-mono mt-0.5">GSTIN: 36AAACN1234F1Z5 &bull; PAN: AAACN1234F</p>
                 </div>
                 <div className="text-right">
                   <span
                     className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mb-1"
                     style={{ backgroundColor: `${accent}15`, color: accent }}
                   >
-                    Business Proposal
+                    Business Proposal {proposal.version ? `(v${proposal.version})` : ''}
                   </span>
                   <div className="text-sm font-bold text-slate-900">{proposal.id || 'PR-2025-001'}</div>
                   <div className="text-[11px] text-slate-500">Date: {proposal.created_date}</div>
@@ -95,14 +107,14 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               {/* Parties Grid */}
               <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Prepared For</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Prepared For (Client)</span>
                   <div className="font-bold text-sm text-slate-900">{proposal.client_company}</div>
                   <div className="text-[11px] text-slate-600 mt-0.5">Attn: {proposal.client_name || 'Client Lead'}</div>
                   <div className="text-[11px] text-slate-600">{proposal.client_email}</div>
                   {proposal.client_phone && <div className="text-[11px] text-slate-600">{proposal.client_phone}</div>}
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Prepared By</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Prepared By (Provider)</span>
                   <div className="font-bold text-sm text-slate-900">{proposal.sender_name}</div>
                   <div className="text-[11px] text-slate-600 mt-0.5">{proposal.sender_company}</div>
                   <div className="text-[11px] text-slate-600">{proposal.sender_email}</div>
@@ -166,7 +178,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               <div>
                 <div className="flex items-center gap-2 font-bold text-sm text-slate-900 border-b border-slate-200 pb-1 mb-2">
                   <span className="w-1 h-3.5 rounded-full" style={{ backgroundColor: accent }} />
-                  <span>4. Commercial Investment & Pricing Breakdown</span>
+                  <span>4. Commercial Investment & Pricing Breakdown (₹ INR)</span>
                 </div>
                 <table className="w-full text-left text-[11px] border border-slate-200 rounded overflow-hidden">
                   <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] border-b border-slate-200">
@@ -174,7 +186,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                       <th className="p-2">Item Description</th>
                       <th className="p-2 text-center">Qty</th>
                       <th className="p-2 text-right">Unit Rate</th>
-                      <th className="p-2 text-right">Amount ({proposal.currency})</th>
+                      <th className="p-2 text-right">Amount ({curr})</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -185,33 +197,54 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                           {it.description && <div className="text-[10px] text-slate-500">{it.description}</div>}
                         </td>
                         <td className="p-2 text-center">{it.quantity} {it.unit_type}</td>
-                        <td className="p-2 text-right">${formatCurrency(it.unit_price)}</td>
-                        <td className="p-2 text-right font-semibold text-slate-900">${formatCurrency(it.total)}</td>
+                        <td className="p-2 text-right">{curr}{formatCurrency(it.unit_price)}</td>
+                        <td className="p-2 text-right font-semibold text-slate-900">{curr}{formatCurrency(it.total)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
 
-                {/* Totals */}
-                <div className="flex justify-end mt-3">
-                  <div className="w-60 bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-1 text-[11px]">
+                {/* GST Breakdown & Totals */}
+                <div className="flex justify-between items-start mt-3 gap-4">
+                  {/* Bank Coordinates */}
+                  <div className="flex-1 bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-[10px] text-slate-600 space-y-0.5">
+                    <div className="font-bold text-slate-800 uppercase tracking-wider text-[9px]">NEFT / RTGS Bank Details:</div>
+                    <div>Bank: HDFC Bank Ltd. | Branch: Madhapur, Hyderabad</div>
+                    <div>A/C Name: Nexura Technologies Pvt. Ltd.</div>
+                    <div>Account No: <span className="font-mono font-bold text-slate-900">50200012345678</span> | IFSC: <span className="font-mono font-bold text-slate-900">HDFC0001234</span></div>
+                  </div>
+
+                  <div className="w-64 bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-1 text-[11px]">
                     <div className="flex justify-between text-slate-600">
                       <span>Subtotal:</span>
-                      <span className="font-semibold">${formatCurrency(proposal.subtotal)}</span>
+                      <span className="font-semibold">{curr}{formatCurrency(proposal.subtotal)}</span>
                     </div>
                     {proposal.discount_percent > 0 && (
                       <div className="flex justify-between text-emerald-600 font-semibold">
                         <span>Discount ({proposal.discount_percent}%):</span>
-                        <span>-${formatCurrency((proposal.subtotal * proposal.discount_percent) / 100.0)}</span>
+                        <span>-{curr}{formatCurrency((proposal.subtotal * proposal.discount_percent) / 100.0)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-slate-600">
-                      <span>Tax ({proposal.tax_percent}%):</span>
-                      <span className="font-semibold">${formatCurrency(proposal.tax_amount)}</span>
-                    </div>
+                    {!isInterstate ? (
+                      <>
+                        <div className="flex justify-between text-slate-600 text-[10.5px]">
+                          <span>CGST (9%):</span>
+                          <span className="font-semibold">{curr}{formatCurrency(cgst)}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-600 text-[10.5px]">
+                          <span>SGST (9%):</span>
+                          <span className="font-semibold">{curr}{formatCurrency(sgst)}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between text-slate-600 text-[10.5px]">
+                        <span>IGST (18%):</span>
+                        <span className="font-semibold">{curr}{formatCurrency(igst)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm font-extrabold text-slate-900 pt-1.5 border-t-2" style={{ borderColor: accent }}>
                       <span>Total Investment:</span>
-                      <span style={{ color: accent }}>${formatCurrency(proposal.total_amount)}</span>
+                      <span style={{ color: accent }}>{curr}{formatCurrency(proposal.total_amount)}</span>
                     </div>
                   </div>
                 </div>
@@ -219,8 +252,8 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
 
               {/* 5. Terms */}
               <div className="p-3 bg-slate-50 rounded-lg border-l-2 text-[10.5px] text-slate-600 space-y-1" style={{ borderColor: accent }}>
-                <div><strong>Payment Terms:</strong> {proposal.payment_terms}</div>
-                <div><strong>Terms & Conditions:</strong> {proposal.terms_and_conditions}</div>
+                <div><strong>Payment Terms:</strong> {proposal.payment_terms || '50% advance upon project sign-off, 30% upon UAT milestone, 20% on final handover.'}</div>
+                <div><strong>Terms & Conditions:</strong> {proposal.terms_and_conditions || '18% GST applicable under Telangana jurisdiction. Standard 1-year bug-fix warranty included.'}</div>
               </div>
 
               {/* Signatures */}
@@ -238,7 +271,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
           )}
 
           {/* ========================================================
-              TEMPLATE 2: CORPORATE ELEGANCE
+              TEMPLATE 2: CORPORATE ELEGANCE (₹ INR & Indian GST)
           ======================================================== */}
           {tpl === 'corporate' && (
             <div className="space-y-6 text-[12px] leading-relaxed">
@@ -246,10 +279,11 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               <div className="bg-slate-950 text-white p-5 rounded border-b-4 border-amber-500 flex items-center justify-between">
                 <div>
                   <h1 className="font-serif text-lg font-bold tracking-wide">{proposal.sender_company}</h1>
-                  <p className="text-[10.5px] text-slate-400">Executive Advisory & Technology Architecture</p>
+                  <p className="text-[10.5px] text-slate-400">Enterprise Software & Cloud Architecture &bull; Hyderabad, India</p>
+                  <p className="text-[9.5px] text-amber-400 font-mono mt-0.5">GSTIN: 36AAACN1234F1Z5 &bull; PAN: AAACN1234F</p>
                 </div>
                 <div className="text-right text-[11px] text-slate-300">
-                  <div className="font-bold text-amber-400 text-sm">{proposal.id}</div>
+                  <div className="font-bold text-amber-400 text-sm">{proposal.id} {proposal.version ? `(v${proposal.version})` : ''}</div>
                   <div>Issuance: {proposal.created_date}</div>
                   <div>Valid: {proposal.valid_until}</div>
                 </div>
@@ -257,7 +291,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
 
               <div>
                 <h2 className="font-serif text-base font-bold text-slate-900">{proposal.title}</h2>
-                <p className="text-xs text-slate-500">Formal Commercial Statement of Work</p>
+                <p className="text-xs text-slate-500">Formal Commercial Statement of Work (₹ INR)</p>
               </div>
 
               {/* Parties */}
@@ -308,7 +342,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               {/* Pricing Table */}
               <div>
                 <h3 className="font-serif font-bold text-xs uppercase tracking-wider text-slate-900 border-b-2 border-slate-900 pb-1 mb-2">
-                  III. Rate Schedule & Investment
+                  III. Rate Schedule & Investment (₹ INR)
                 </h3>
                 <table className="w-full text-left text-[11px] border border-slate-800">
                   <thead className="bg-slate-900 text-white uppercase text-[10px]">
@@ -316,7 +350,7 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                       <th className="p-2">Service Description</th>
                       <th className="p-2 text-center">Units</th>
                       <th className="p-2 text-right">Rate</th>
-                      <th className="p-2 text-right">Total ({proposal.currency})</th>
+                      <th className="p-2 text-right">Total ({curr})</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
@@ -327,33 +361,52 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                           {it.description && <div className="text-[10px] text-slate-500">{it.description}</div>}
                         </td>
                         <td className="p-2 text-center">{it.quantity} {it.unit_type}</td>
-                        <td className="p-2 text-right">${formatCurrency(it.unit_price)}</td>
-                        <td className="p-2 text-right font-bold text-slate-950">${formatCurrency(it.total)}</td>
+                        <td className="p-2 text-right">{curr}{formatCurrency(it.unit_price)}</td>
+                        <td className="p-2 text-right font-bold text-slate-950">{curr}{formatCurrency(it.total)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
 
-                {/* Corporate Totals */}
-                <div className="flex justify-end mt-2">
+                {/* Corporate Totals & Bank details */}
+                <div className="flex justify-between items-start mt-2 gap-4">
+                  <div className="flex-1 border border-slate-300 p-2.5 bg-slate-50 text-[10px] text-slate-600 space-y-0.5">
+                    <div className="font-bold text-slate-900 uppercase">HDFC Corporate Remittance:</div>
+                    <div>Account No: <span className="font-mono font-bold text-slate-950">50200012345678</span></div>
+                    <div>IFSC Code: <span className="font-mono font-bold text-slate-950">HDFC0001234</span> &bull; Madhapur, Hyd</div>
+                  </div>
+
                   <div className="w-64 border border-slate-400 p-3 bg-slate-50 space-y-1 text-[11px]">
                     <div className="flex justify-between">
                       <span>Contract Subtotal:</span>
-                      <span>${formatCurrency(proposal.subtotal)}</span>
+                      <span>{curr}{formatCurrency(proposal.subtotal)}</span>
                     </div>
                     {proposal.discount_percent > 0 && (
                       <div className="flex justify-between text-amber-700">
                         <span>Corporate Discount ({proposal.discount_percent}%):</span>
-                        <span>-${formatCurrency((proposal.subtotal * proposal.discount_percent)/100.0)}</span>
+                        <span>-{curr}{formatCurrency((proposal.subtotal * proposal.discount_percent)/100.0)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between">
-                      <span>Taxes ({proposal.tax_percent}%):</span>
-                      <span>${formatCurrency(proposal.tax_amount)}</span>
-                    </div>
+                    {!isInterstate ? (
+                      <>
+                        <div className="flex justify-between text-slate-600 text-[10.5px]">
+                          <span>CGST (9%):</span>
+                          <span>{curr}{formatCurrency(cgst)}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-600 text-[10.5px]">
+                          <span>SGST (9%):</span>
+                          <span>{curr}{formatCurrency(sgst)}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between text-slate-600 text-[10.5px]">
+                        <span>IGST (18%):</span>
+                        <span>{curr}{formatCurrency(igst)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-xs font-bold text-slate-950 pt-1 border-t border-slate-900">
                       <span>Total Value:</span>
-                      <span>${formatCurrency(proposal.total_amount)}</span>
+                      <span>{curr}{formatCurrency(proposal.total_amount)}</span>
                     </div>
                   </div>
                 </div>
@@ -376,14 +429,18 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
           )}
 
           {/* ========================================================
-              TEMPLATE 3: MINIMAL STYLE
+              TEMPLATE 3: MINIMAL STYLE (₹ INR & Indian GST)
           ======================================================== */}
           {tpl === 'minimal' && (
             <div className="space-y-6 text-[12px] leading-relaxed">
               <div>
-                <div className="text-xs font-semibold text-slate-900 mb-6 tracking-tight">{proposal.sender_company}</div>
+                <div className="text-xs font-semibold text-slate-900 mb-6 tracking-tight">
+                  {proposal.sender_company} &bull; <span className="font-mono text-[10px] text-slate-500">GSTIN: 36AAACN1234F1Z5</span>
+                </div>
                 <div className="flex items-end justify-between border-b border-slate-900 pb-2">
-                  <div className="text-lg font-medium tracking-tight text-slate-950">{proposal.title}</div>
+                  <div className="text-lg font-medium tracking-tight text-slate-950">
+                    {proposal.title} {proposal.version ? `(v${proposal.version})` : ''}
+                  </div>
                   <div className="text-[11px] font-mono text-slate-500">{proposal.id} &bull; {proposal.created_date}</div>
                 </div>
               </div>
@@ -419,14 +476,14 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
               </div>
 
               <div>
-                <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">03 / Financials</div>
+                <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">03 / Financials (₹ INR)</div>
                 <table className="w-full text-left text-[11px]">
                   <thead>
                     <tr className="border-b border-slate-300 text-slate-500 text-[10px] uppercase">
                       <th className="py-1">Item</th>
                       <th className="py-1 text-center">Qty</th>
                       <th className="py-1 text-right">Rate</th>
-                      <th className="py-1 text-right">Total ({proposal.currency})</th>
+                      <th className="py-1 text-right">Total ({curr})</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -436,31 +493,44 @@ export default function LiveDocumentPreview({ proposal, onPrint, onDownload }) {
                           <span className="font-medium text-slate-900">{it.name}</span>
                         </td>
                         <td className="py-2 text-center text-slate-500">{it.quantity} {it.unit_type}</td>
-                        <td className="py-2 text-right">${formatCurrency(it.unit_price)}</td>
-                        <td className="py-2 text-right font-medium text-slate-900">${formatCurrency(it.total)}</td>
+                        <td className="py-2 text-right">{curr}{formatCurrency(it.unit_price)}</td>
+                        <td className="py-2 text-right font-medium text-slate-900">{curr}{formatCurrency(it.total)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
 
                 <div className="flex flex-col items-end pt-3 text-[11px] text-slate-500 space-y-1">
-                  <div className="flex justify-between w-48">
+                  <div className="flex justify-between w-56">
                     <span>Subtotal:</span>
-                    <span>${formatCurrency(proposal.subtotal)}</span>
+                    <span>{curr}{formatCurrency(proposal.subtotal)}</span>
                   </div>
                   {proposal.discount_percent > 0 && (
-                    <div className="flex justify-between w-48 text-emerald-600">
+                    <div className="flex justify-between w-56 text-emerald-600">
                       <span>Discount ({proposal.discount_percent}%):</span>
-                      <span>-${formatCurrency((proposal.subtotal * proposal.discount_percent)/100.0)}</span>
+                      <span>-{curr}{formatCurrency((proposal.subtotal * proposal.discount_percent)/100.0)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between w-48">
-                    <span>Tax:</span>
-                    <span>${formatCurrency(proposal.tax_amount)}</span>
-                  </div>
-                  <div className="flex justify-between w-48 font-bold text-slate-950 text-xs pt-1 border-t border-slate-900">
-                    <span>Total:</span>
-                    <span>${formatCurrency(proposal.total_amount)}</span>
+                  {!isInterstate ? (
+                    <>
+                      <div className="flex justify-between w-56 text-[10.5px]">
+                        <span>CGST (9%):</span>
+                        <span>{curr}{formatCurrency(cgst)}</span>
+                      </div>
+                      <div className="flex justify-between w-56 text-[10.5px]">
+                        <span>SGST (9%):</span>
+                        <span>{curr}{formatCurrency(sgst)}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex justify-between w-56 text-[10.5px]">
+                      <span>IGST (18%):</span>
+                      <span>{curr}{formatCurrency(igst)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between w-56 font-bold text-slate-950 text-xs pt-1 border-t border-slate-900">
+                    <span>Total Investment:</span>
+                    <span>{curr}{formatCurrency(proposal.total_amount)}</span>
                   </div>
                 </div>
               </div>

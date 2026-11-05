@@ -3,20 +3,22 @@ from typing import List, Dict, Any, Tuple
 from sqlalchemy.orm import Session
 from backend.app.models.pricing import PricingService
 from backend.app.schemas.pricing import MatchedLineItem, PricingCalculationResponse
+from backend.app.config import settings
 
 class PricingServiceManager:
     @staticmethod
     def match_and_calculate_pricing(
         db: Session,
         requirements: List[Dict[str, Any]],
-        tax_percent: float = 10.0,
+        gst_rate: float = 18.0,
         discount_percent: float = 0.0,
-        currency: str = "USD"
+        is_interstate: bool = False,
+        currency: str = "INR"
     ) -> PricingCalculationResponse:
         """
         Matches extracted customer requirements against active catalogue items.
-        Deterministic backend calculation only: does not allow AI to hallucinate prices.
-        Identifies unmatched items clearly as 'unmatched_custom'.
+        Calculates costs strictly in INR with 18% GST (CGST+SGST or IGST).
+        Does NOT allow AI to hallucinate prices.
         """
         catalogue_items: List[PricingService] = db.query(PricingService).filter(PricingService.is_active == True).all()
         matched_items: List[MatchedLineItem] = []
@@ -29,7 +31,6 @@ class PricingServiceManager:
             if req_qty <= 0:
                 req_qty = 1.0
             
-            # Combine text for matching
             target_text = f"{req_name} {req_desc}".lower()
             
             best_match: PricingService = None
@@ -41,14 +42,18 @@ class PricingServiceManager:
                 cat_desc_lower = (cat.description or "").lower()
                 cat_keywords = [k.lower() for k in (cat.keywords or [])]
 
-                # Exact or phrase match on name
-                if cat_name_lower in target_text or any(target_text in word for word in cat_name_lower.split()):
-                    score += 50
+                # Match against code
+                if cat.code.lower() in target_text:
+                    score += 60
+
+                # Match against name
+                if cat_name_lower in target_text or any(target_text in word for word in cat_name_lower.split() if len(word) > 3):
+                    score += 40
                 
                 # Check keywords
                 for kw in cat_keywords:
                     if kw in target_text:
-                        score += 20
+                        score += 25
                 
                 # Check description tokens
                 for token in cat_desc_lower.split():
@@ -79,13 +84,13 @@ class PricingServiceManager:
                     )
                 )
             else:
-                # Custom / Unmatched item requirement
+                # Custom / Uncatalogued requirement
                 has_unmatched = True
                 matched_items.append(
                     MatchedLineItem(
                         id=str(uuid.uuid4())[:8],
                         name=req_name,
-                        description=f"[Uncatalogued Requirement - Requires Verification] {req_desc}",
+                        description=f"[Custom Requirement - Manual Estimate] {req_desc}",
                         unit_type="custom",
                         quantity=req_qty,
                         unit_price=0.0, # Must be priced manually by human reviewer!
@@ -98,21 +103,41 @@ class PricingServiceManager:
                     )
                 )
 
-        # Calculate backend totals
+        # 1. Subtotal in INR
         subtotal = sum(item.total for item in matched_items)
+        
+        # 2. Discount
         discount_amount = round(subtotal * (discount_percent / 100.0), 2)
         net_after_discount = max(0.0, subtotal - discount_amount)
-        tax_amount = round(net_after_discount * (tax_percent / 100.0), 2)
+        
+        # 3. GST Calculation (18% default)
+        tax_amount = round(net_after_discount * (gst_rate / 100.0), 2)
+        
+        if is_interstate:
+            igst_amount = tax_amount
+            cgst_amount = 0.0
+            sgst_amount = 0.0
+        else:
+            igst_amount = 0.0
+            cgst_amount = round(tax_amount / 2.0, 2)
+            sgst_amount = round(tax_amount - cgst_amount, 2)
+            
         total_amount = round(net_after_discount + tax_amount, 2)
 
         return PricingCalculationResponse(
             items=matched_items,
             subtotal=round(subtotal, 2),
             discount_percent=discount_percent,
-            tax_percent=tax_percent,
+            discount_amount=discount_amount,
+            gst_rate=gst_rate,
+            is_interstate=is_interstate,
+            cgst_amount=cgst_amount,
+            sgst_amount=sgst_amount,
+            igst_amount=igst_amount,
             tax_amount=tax_amount,
             total_amount=total_amount,
-            currency=currency,
+            currency="INR",
+            currency_symbol="₹",
             has_unmatched_items=has_unmatched
         )
 

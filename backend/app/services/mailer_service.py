@@ -1,15 +1,12 @@
-import smtplib
 import os
 import logging
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.application import MIMEApplication
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 from sqlalchemy.orm import Session
 from backend.app.models.proposal import Proposal
 from backend.app.models.activity import ActivityLog
 from backend.app.config import settings
+from backend.app.services.email_service import email_service
 
 logger = logging.getLogger(__name__)
 
@@ -23,67 +20,56 @@ class MailerService:
         pdf_path: Optional[str] = None
     ) -> Dict[str, Any]:
         """
-        Sends the proposal to the client with optional PDF attachment.
-        If SMTP credentials are provided, delivers via real SMTP server.
-        Otherwise records delivery with timestamp and tracking status.
+        Sends the business proposal directly to customer via Gmail API.
+        Creates an automatic 3-day follow-up reminder task.
         """
         subject = f"Business Proposal: {proposal.title} [Ref: {proposal.id}]"
         
-        default_body = f"""Dear {proposal.client_name or 'Client'},
+        default_body = f"""Dear {proposal.client_name or 'Sir/Madam'},
 
-Thank you for your inquiry. Please find attached our formal proposal for {proposal.project_overview[:100]}...
+Thank you for your enquiry with {proposal.sender_company}.
 
-Key Highlights:
-• Proposal ID: {proposal.id}
-• Total Investment: ${proposal.total_amount:,.2f} {proposal.currency}
-• Validity: {proposal.valid_until or '30 days from issue'}
+Please find attached our formal commercial proposal and statement of work for {proposal.title}.
 
-{custom_message or 'Please review the attached document and let us know if you have any questions or would like to schedule a review call.'}
+Key Proposal Highlights:
+• Proposal Reference: {proposal.id} (v{proposal.version})
+• Project Scope: {proposal.project_overview[:120]}...
+• Total Investment: ₹{proposal.total_amount:,.2f} INR (inclusive of 18% GST)
+• Proposal Validity: {proposal.valid_until or '30 days from date of issue'}
+
+{custom_message or 'Please review the attached PDF document. We would be pleased to schedule a brief discovery call to answer any technical or commercial queries.'}
 
 Warm regards,
-{proposal.sender_name or 'Solutions Team'}
-{proposal.sender_company}
-{proposal.sender_email} | {proposal.sender_phone or '+1 (800) 555-0199'}
+{proposal.sender_name or 'Anya Sharma'}
+Client Solutions Lead | {proposal.sender_company}
+Hyderabad, India | {proposal.sender_phone or '+91 40 4859 2100'}
+Sales Email: {settings.GMAIL_SALES_EMAIL}
 """
 
-        delivery_mode = "simulated"
-        error_detail = None
+        # Dispatch via Gmail API
+        delivery_res = email_service.send_via_gmail_api(
+            to_email=recipient_email,
+            subject=subject,
+            body_text=default_body,
+            pdf_path=pdf_path or proposal.pdf_path
+        )
 
-        if settings.SMTP_HOST and settings.SMTP_USER and settings.SMTP_PASSWORD:
-            try:
-                msg = MIMEMultipart()
-                msg['From'] = settings.SMTP_FROM or settings.SMTP_USER
-                msg['To'] = recipient_email
-                msg['Subject'] = subject
-                msg.attach(MIMEText(default_body, 'plain'))
-
-                if pdf_path and os.path.exists(pdf_path) and pdf_path.endswith(".pdf"):
-                    with open(pdf_path, "rb") as f:
-                        part = MIMEApplication(f.read(), Name=os.path.basename(pdf_path))
-                        part['Content-Disposition'] = f'attachment; filename="{os.path.basename(pdf_path)}"'
-                        msg.attach(part)
-
-                server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT)
-                server.starttls()
-                server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-                server.send_message(msg)
-                server.quit()
-                delivery_mode = "smtp"
-            except Exception as e:
-                logger.error(f"SMTP delivery failed: {e}")
-                delivery_mode = "simulated_fallback"
-                error_detail = str(e)
-
-        # Update proposal state
+        now = datetime.utcnow()
         proposal.status = "sent"
-        proposal.sent_at = datetime.utcnow()
+        proposal.sent_at = now
         proposal.sent_to = recipient_email
+        proposal.gmail_message_id = delivery_res.get("gmail_message_id")
+
+        # Set Automatic 3-Day Follow-Up Reminder (Requested Feature!)
+        proposal.follow_up_due_date = now + timedelta(days=3)
+        proposal.follow_up_status = "pending"
+        proposal.follow_up_notes = f"Follow-up scheduled with {proposal.client_name} ({recipient_email}) regarding {proposal.title}."
 
         # Add activity record
         activity = ActivityLog(
             action_type="proposal_sent",
-            title=f"Proposal {proposal.id} sent to {recipient_email}",
-            description=f"Status: Sent via {delivery_mode}. Value: ${proposal.total_amount:,.2f}",
+            title=f"Proposal {proposal.id} sent via Gmail to {recipient_email}",
+            description=f"Delivered via {delivery_res.get('mode', 'gmail_api')}. Total: ₹{proposal.total_amount:,.2f} INR. Automatic follow-up scheduled for {proposal.follow_up_due_date.strftime('%d/%m/%Y')}.",
             reference_id=proposal.id
         )
         db.add(activity)
@@ -91,11 +77,12 @@ Warm regards,
 
         return {
             "success": True,
-            "delivery_mode": delivery_mode,
+            "mode": delivery_res.get("mode"),
             "recipient": recipient_email,
             "sent_at": proposal.sent_at.isoformat(),
             "status": "sent",
-            "error_detail": error_detail
+            "follow_up_due_date": proposal.follow_up_due_date.isoformat(),
+            "gmail_message_id": proposal.gmail_message_id
         }
 
 mailer_service = MailerService()

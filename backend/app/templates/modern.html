@@ -8,7 +8,7 @@
     
     @page {
       size: A4;
-      margin: 18mm 16mm 18mm 16mm;
+      margin: 16mm 14mm 16mm 14mm;
     }
     
     * {
@@ -21,8 +21,8 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: #1e293b;
       background: #ffffff;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 12.5px;
+      line-height: 1.5;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
@@ -38,21 +38,28 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding-bottom: 24px;
+      padding-bottom: 18px;
       border-bottom: 2px solid {{ proposal.accent_color or '#2563eb' }};
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
     .brand-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 800;
       color: #0f172a;
       letter-spacing: -0.5px;
     }
 
     .brand-subtitle {
-      font-size: 12px;
+      font-size: 11px;
       color: #64748b;
+      margin-top: 3px;
+    }
+
+    .brand-tax {
+      font-size: 10.5px;
+      color: #475569;
+      font-weight: 600;
       margin-top: 4px;
     }
 
@@ -61,12 +68,12 @@
       background: #eff6ff;
       color: {{ proposal.accent_color or '#2563eb' }};
       font-weight: 700;
-      font-size: 11px;
+      font-size: 10.5px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      margin-bottom: 6px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
     }
 
     .meta-box {
@@ -74,69 +81,70 @@
     }
 
     .meta-id {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: #0f172a;
     }
 
     .meta-date {
-      font-size: 12px;
+      font-size: 11.5px;
       color: #64748b;
       margin-top: 2px;
     }
 
-    /* Client & Provider Grid */
+    /* Parties Grid */
     .parties-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 16px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 28px;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
     }
 
     .party-col h4 {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       color: #64748b;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-weight: 700;
     }
 
     .party-col .name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #0f172a;
     }
 
     .party-col .detail {
-      font-size: 12px;
+      font-size: 11.5px;
       color: #475569;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     /* Section Styles */
     .section {
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
     .section-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: #0f172a;
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      padding-bottom: 6px;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
       border-bottom: 1px solid #e2e8f0;
     }
 
     .section-title .bar {
       width: 4px;
-      height: 16px;
+      height: 14px;
       background: {{ proposal.accent_color or '#2563eb' }};
       border-radius: 2px;
       display: inline-block;
@@ -144,92 +152,90 @@
 
     .overview-text {
       color: #334155;
-      font-size: 13.5px;
-      line-height: 1.7;
-      background: #ffffff;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
     /* Deliverables List */
     .deliverables-list {
       list-style: none;
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
 
     .deliverable-item {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
       background: #f8fafc;
       border: 1px solid #f1f5f9;
       border-radius: 6px;
-      padding: 10px 14px;
+      padding: 8px 10px;
     }
 
     .deliverable-bullet {
       color: {{ proposal.accent_color or '#2563eb' }};
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1;
     }
 
     .deliverable-content {
-      font-size: 13px;
+      font-size: 11.5px;
       color: #334155;
     }
 
     /* Timeline Cards */
     .milestones-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 8px;
     }
 
     .milestone-card {
       border: 1px solid #e2e8f0;
       background: #ffffff;
-      border-radius: 8px;
-      padding: 14px;
+      border-radius: 6px;
+      padding: 10px;
       border-top: 3px solid {{ proposal.accent_color or '#2563eb' }};
     }
 
     .phase-badge {
-      font-size: 10.5px;
+      font-size: 9.5px;
       font-weight: 700;
       color: {{ proposal.accent_color or '#2563eb' }};
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .milestone-title {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #0f172a;
-      margin: 4px 0;
+      margin: 2px 0;
     }
 
     .milestone-duration {
-      font-size: 11.5px;
+      font-size: 10.5px;
       color: #64748b;
     }
 
     .milestone-deliv {
-      font-size: 11.5px;
+      font-size: 10px;
       color: #475569;
-      margin-top: 6px;
+      margin-top: 4px;
       border-top: 1px dashed #e2e8f0;
-      padding-top: 6px;
+      padding-top: 4px;
     }
 
     /* Pricing Table */
     .pricing-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
+      margin-top: 8px;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
@@ -237,19 +243,19 @@
       background: #f8fafc;
       color: #475569;
       font-weight: 600;
-      font-size: 11.5px;
+      font-size: 10.5px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 12px 14px;
+      padding: 9px 12px;
       text-align: left;
       border-bottom: 1px solid #e2e8f0;
     }
 
     .pricing-table td {
-      padding: 12px 14px;
+      padding: 9px 12px;
       border-bottom: 1px solid #f1f5f9;
       color: #334155;
-      font-size: 12.5px;
+      font-size: 11.5px;
     }
 
     .pricing-table tr:nth-child(even) td {
@@ -262,47 +268,53 @@
     }
 
     .item-desc {
-      font-size: 11.5px;
+      font-size: 10.5px;
       color: #64748b;
       margin-top: 2px;
     }
 
-    .text-right {
-      text-align: right;
-    }
-
-    .text-center {
-      text-align: center;
-    }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
 
     /* Totals Box */
     .totals-container {
       display: flex;
-      justify-content: flex-end;
-      margin-top: 16px;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 12px;
+      gap: 16px;
+    }
+
+    .bank-box {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11px;
     }
 
     .totals-box {
-      width: 280px;
+      width: 270px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 14px 18px;
+      border-radius: 6px;
+      padding: 10px 14px;
     }
 
     .total-row {
       display: flex;
       justify-content: space-between;
-      font-size: 12.5px;
+      font-size: 11.5px;
       color: #475569;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .grand-total {
       border-top: 2px solid {{ proposal.accent_color or '#2563eb' }};
-      margin-top: 8px;
-      padding-top: 8px;
-      font-size: 16px;
+      margin-top: 6px;
+      padding-top: 6px;
+      font-size: 14.5px;
       font-weight: 800;
       color: #0f172a;
     }
@@ -311,42 +323,36 @@
     .terms-box {
       background: #fafaf9;
       border-left: 3px solid #cbd5e1;
-      padding: 12px 16px;
-      font-size: 11.5px;
+      padding: 10px 14px;
+      font-size: 11px;
       color: #64748b;
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 24px;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 18px;
     }
 
     /* Signatures */
     .signature-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 32px;
-      margin-top: 36px;
+      gap: 24px;
+      margin-top: 24px;
       page-break-inside: avoid;
     }
 
     .sig-block {
       border-top: 1px solid #cbd5e1;
-      padding-top: 12px;
+      padding-top: 8px;
     }
 
     .sig-line {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       color: #0f172a;
     }
 
     .sig-title {
-      font-size: 11.5px;
+      font-size: 11px;
       color: #64748b;
-    }
-
-    .sig-date {
-      font-size: 11.5px;
-      color: #94a3b8;
-      margin-top: 4px;
     }
   </style>
 </head>
@@ -356,13 +362,14 @@
     <div class="header">
       <div>
         <div class="brand-title">{{ proposal.sender_company }}</div>
-        <div class="brand-subtitle">{{ proposal.sender_address or 'Enterprise Technology Solutions' }}</div>
+        <div class="brand-subtitle">{{ proposal.sender_address }}</div>
+        <div class="brand-tax">GSTIN: {{ proposal.sender_gstin or '36AAACN1234F1Z5' }} | PAN: {{ proposal.sender_pan or 'AAACN1234F' }}</div>
       </div>
       <div class="meta-box">
-        <span class="proposal-badge">Business Proposal</span>
-        <div class="meta-id">{{ proposal.id }}</div>
-        <div class="meta-date">Date: {{ proposal.created_date or 'November 05, 2026' }}</div>
-        <div class="meta-date">Valid Until: {{ proposal.valid_until or 'December 05, 2026' }}</div>
+        <span class="proposal-badge">Commercial Proposal</span>
+        <div class="meta-id">{{ proposal.id }} (v{{ proposal.version or 1 }})</div>
+        <div class="meta-date">Date: {{ proposal.created_date }}</div>
+        <div class="meta-date">Validity: {{ proposal.valid_until }}</div>
       </div>
     </div>
 
@@ -371,32 +378,31 @@
       <div class="party-col">
         <h4>Prepared For</h4>
         <div class="name">{{ proposal.client_company }}</div>
-        <div class="detail">Attn: {{ proposal.client_name or 'Procurement Lead' }}</div>
+        <div class="detail">Attn: {{ proposal.client_name or 'Rahul Sharma' }}</div>
         <div class="detail">{{ proposal.client_email }}</div>
-        {% if proposal.client_phone %}
-        <div class="detail">{{ proposal.client_phone }}</div>
-        {% endif %}
+        {% if proposal.client_phone %}<div class="detail">Ph: {{ proposal.client_phone }}</div>{% endif %}
+        {% if proposal.client_gstin %}<div class="detail">GSTIN: {{ proposal.client_gstin }}</div>{% endif %}
       </div>
       <div class="party-col">
-        <h4>Prepared By</h4>
-        <div class="name">{{ proposal.sender_name or 'Sarah Jenkins' }}</div>
+        <h4>Service Provider</h4>
+        <div class="name">{{ proposal.sender_name or 'Anya Sharma' }}</div>
         <div class="detail">{{ proposal.sender_company }}</div>
-        <div class="detail">{{ proposal.sender_email }}</div>
-        <div class="detail">{{ proposal.sender_phone or '+1 (800) 555-0199' }}</div>
+        <div class="detail">Email: {{ proposal.sender_email }}</div>
+        <div class="detail">Ph: {{ proposal.sender_phone }}</div>
       </div>
     </div>
 
-    <!-- Project Overview -->
+    <!-- 1. Strategic Summary -->
     <div class="section">
-      <div class="section-title"><span class="bar"></span> 1. Executive Summary & Project Overview</div>
+      <div class="section-title"><span class="bar"></span> 1. Project Overview & Objectives</div>
       <div class="overview-text">{{ proposal.project_overview }}</div>
     </div>
 
-    <!-- Scope of Work & Deliverables -->
+    <!-- 2. Scope & Deliverables -->
     <div class="section">
       <div class="section-title"><span class="bar"></span> 2. Scope of Work & Deliverables</div>
       {% if proposal.scope_of_work %}
-      <div class="overview-text" style="margin-bottom: 12px;">{{ proposal.scope_of_work }}</div>
+      <div class="overview-text" style="margin-bottom: 8px;">{{ proposal.scope_of_work }}</div>
       {% endif %}
       <div class="deliverables-list">
         {% for item in proposal.deliverables %}
@@ -414,14 +420,14 @@
       </div>
     </div>
 
-    <!-- Timeline & Milestones -->
+    <!-- 3. Milestones -->
     {% if proposal.timeline_milestones %}
     <div class="section">
       <div class="section-title"><span class="bar"></span> 3. Delivery Schedule & Milestones</div>
       <div class="milestones-grid">
         {% for m in proposal.timeline_milestones %}
         <div class="milestone-card">
-          <div class="phase-badge">{{ m.phase or 'Phase ' ~ loop.index }}</div>
+          <div class="phase-badge">{{ m.phase }}</div>
           <div class="milestone-title">{{ m.title }}</div>
           <div class="milestone-duration">⏱ {{ m.duration }}</div>
           <div class="milestone-deliv">{{ m.deliverables }}</div>
@@ -431,16 +437,16 @@
     </div>
     {% endif %}
 
-    <!-- Pricing Breakdown -->
+    <!-- 4. Pricing & GST Breakdown in INR -->
     <div class="section">
-      <div class="section-title"><span class="bar"></span> 4. Commercial Investment & Pricing Breakdown</div>
+      <div class="section-title"><span class="bar"></span> 4. Commercial Investment & GST Breakdown</div>
       <table class="pricing-table">
         <thead>
           <tr>
-            <th style="width: 48%;">Service / Item Description</th>
-            <th class="text-center" style="width: 14%;">Qty / Units</th>
-            <th class="text-right" style="width: 18%;">Unit Rate</th>
-            <th class="text-right" style="width: 20%;">Amount ({{ proposal.currency }})</th>
+            <th style="width: 52%;">Service Description</th>
+            <th class="text-center" style="width: 14%;">Qty</th>
+            <th class="text-right" style="width: 16%;">Unit Rate (₹)</th>
+            <th class="text-right" style="width: 18%;">Amount (₹ INR)</th>
           </tr>
         </thead>
         <tbody>
@@ -453,44 +459,66 @@
               {% endif %}
             </td>
             <td class="text-center">{{ item.quantity }} {{ item.unit_type }}</td>
-            <td class="text-right">${{ "{:,.2f}".format(item.unit_price) }}</td>
-            <td class="text-right" style="font-weight: 600;">${{ "{:,.2f}".format(item.total) }}</td>
+            <td class="text-right">₹{{ "{:,.2f}".format(item.unit_price) }}</td>
+            <td class="text-right" style="font-weight: 600;">₹{{ "{:,.2f}".format(item.total) }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <!-- Totals -->
+      <!-- Totals & Bank Details -->
       <div class="totals-container">
+        <!-- Bank Details -->
+        <div class="bank-box">
+          <strong style="color: #0f172a;">Bank Details for NEFT / RTGS Transfer:</strong><br>
+          Account Name: {{ proposal.sender_company }}<br>
+          Bank: HDFC Bank Ltd., Madhapur Branch<br>
+          Account No: 50200012345678 &nbsp;|&nbsp; IFSC Code: HDFC0001234
+        </div>
+
+        <!-- Totals -->
         <div class="totals-box">
           <div class="total-row">
             <span>Subtotal:</span>
-            <span>${{ "{:,.2f}".format(proposal.subtotal) }}</span>
+            <span>₹{{ "{:,.2f}".format(proposal.subtotal) }}</span>
           </div>
           {% if proposal.discount_percent and proposal.discount_percent > 0 %}
           <div class="total-row" style="color: #16a34a;">
             <span>Discount ({{ proposal.discount_percent }}%):</span>
-            <span>-${{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span>
+            <span>-₹{{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span>
           </div>
           {% endif %}
+          
+          {% if proposal.is_interstate %}
           <div class="total-row">
-            <span>Estimated Tax ({{ proposal.tax_percent }}%):</span>
-            <span>${{ "{:,.2f}".format(proposal.tax_amount) }}</span>
+            <span>IGST (18%):</span>
+            <span>₹{{ "{:,.2f}".format(proposal.tax_amount) }}</span>
           </div>
+          {% else %}
+          <div class="total-row">
+            <span>CGST (9%):</span>
+            <span>₹{{ "{:,.2f}".format(proposal.cgst_amount or proposal.tax_amount / 2.0) }}</span>
+          </div>
+          <div class="total-row">
+            <span>SGST (9%):</span>
+            <span>₹{{ "{:,.2f}".format(proposal.sgst_amount or proposal.tax_amount / 2.0) }}</span>
+          </div>
+          {% endif %}
+          
           <div class="total-row grand-total">
-            <span>Total Investment:</span>
-            <span>${{ "{:,.2f}".format(proposal.total_amount) }}</span>
+            <span>Total Payable:</span>
+            <span>₹{{ "{:,.2f}".format(proposal.total_amount) }}</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Terms & Payment Schedule -->
+    <!-- 5. Payment Terms -->
     <div class="section">
-      <div class="section-title"><span class="bar"></span> 5. Payment Schedule & Terms</div>
+      <div class="section-title"><span class="bar"></span> 5. Payment Terms & Conditions</div>
       <div class="terms-box">
-        <strong>Payment Structure:</strong> {{ proposal.payment_terms or '30% Upon Kickoff, 40% Mid-Project Milestone, 30% Final Delivery & Acceptance' }}<br><br>
-        <strong>Terms & Conditions:</strong> {{ proposal.terms_and_conditions or 'This proposal is valid for 30 calendar days from the date of issue. Scope changes require written approval.' }}
+        <strong>Billing & Payment Schedule:</strong> {{ proposal.payment_terms }}<br><br>
+        <strong>Terms & Conditions:</strong> {{ proposal.terms_and_conditions }}
       </div>
     </div>
 
@@ -498,13 +526,13 @@
     <div class="signature-grid">
       <div class="sig-block">
         <div class="sig-line">Accepted by: {{ proposal.client_company }}</div>
-        <div class="sig-title">Authorized Representative Signature & Date</div>
-        <div class="sig-date">Date: ________________________</div>
+        <div class="sig-title">Authorized Signatory & Stamp</div>
+        <div style="font-size: 10.5px; color: #94a3b8; margin-top: 4px;">Date: ________________________</div>
       </div>
       <div class="sig-block">
         <div class="sig-line">Issued by: {{ proposal.sender_company }}</div>
-        <div class="sig-title">{{ proposal.sender_name or 'Sarah Jenkins' }}, Client Solutions</div>
-        <div class="sig-date">Date: {{ proposal.created_date or 'November 05, 2026' }}</div>
+        <div class="sig-title">{{ proposal.sender_name or 'Anya Sharma' }}, Solutions Lead</div>
+        <div style="font-size: 10.5px; color: #94a3b8; margin-top: 4px;">Date: {{ proposal.created_date }}</div>
       </div>
     </div>
   </div>

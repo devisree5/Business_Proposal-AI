@@ -1,220 +1,239 @@
-# ProposalGen AI | Commercial B2B Email-to-Proposal Platform
+# Nexura Sales AI | Email-Driven B2B Proposal Automation System
+### Real-World Email-to-Proposal Pipeline with Indian Business Conventions (₹ INR & 18% GST)
 
-![ProposalGen AI](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)
+![Nexura Sales AI](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)
 
-> **ProposalGen AI** is an enterprise-grade B2B sales automation platform that transforms unstructured customer service requests received via email into professional, mathematically accurate, and beautifully styled business proposals in seconds.
-
----
-
-## 🌟 Key Capabilities & Architecture
-
-```
-   ┌───────────────────────────────────────────────────────────────┐
-   │                       Customer Email                          │
-   │            (Gmail API / IMAP / Ingestion Simulator)           │
-   └───────────────────────────────┬───────────────────────────────┘
-                                   │
-                                   ▼
-   ┌───────────────────────────────────────────────────────────────┐
-   │                  AI-Powered Email Analyzer                    │
-   │               (Google Gemini API / Heuristics)                │
-   │   • Client Company & Contact Info    • Deliverables & Scope   │
-   │   • Project Overview & Timeline      • Missing Info Detection │
-   └───────────────────────────────┬───────────────────────────────┘
-                                   │
-                                   ▼
-   ┌───────────────────────────────────────────────────────────────┐
-   │                 Pricing Catalogue Automation                  │
-   │                 (Deterministic Backend Engine)                │
-   │   • Semantic Keyword Matcher         • Unit Price Calculation │
-   │   • Unmatched Custom Requirement     • Tax & Discount Logic   │
-   └───────────────────────────────┬───────────────────────────────┘
-                                   │
-                                   ▼
-   ┌───────────────────────────────────────────────────────────────┐
-   │                 STANDOUT PROPOSAL EDITOR                      │
-   │            (Interactive Split-View B2B Builder)               │
-   │   • Live A4 WYSIWYG Document Sheet Preview (Real-time updates)│
-   │   • 3 Professional PDF Themes (Modern, Corporate, Minimal)    │
-   │   • Section-by-Section Controls with AI Content Refinement    │
-   │   • Live Mathematical Recalculation & Accent Color Picker     │
-   └───────────────────────────────┬───────────────────────────────┘
-                                   │
-                  ┌────────────────┴────────────────┐
-                  ▼                                 ▼
-   ┌──────────────────────────────┐  ┌──────────────────────────────┐
-   │    Vector PDF Generation     │  │   Direct Client Delivery     │
-   │    (Playwright + Chromium)   │  │   (SMTP / Gmail Outbound)    │
-   └──────────────────────────────┘  └──────────────────────────────┘
-```
+> **Nexura Sales AI** is a production-ready, email-driven B2B sales automation system tailored for Indian software service companies. Located in Hitec City, Hyderabad, it converts inbound customer service inquiries received on the company's dedicated sales email (`anyaforgerrrr345@gmail.com`) into reviewed, priced, and delivered business proposals in **₹ INR** with **18% GST** (CGST/SGST/IGST breakdown), Indian corporate credentials, and 3-day automatic follow-up reminders.
 
 ---
 
-## 🚀 Key Functional Features
+## 🏛️ Indian Business & Corporate Profile
 
-### 1. 📧 Email Integration & Deduplication
-- **Multi-Source Ingestion**: Ingests customer inquiries via **Gmail API**, **IMAP (SSL 993)**, or the built-in **Inbound Email Simulator** (with pre-built enterprise presets for Acme Corp, Global Tech Ltd, Modern Tools Inc, and Delta Solutions).
-- **Deduplication Engine**: Calculates SHA-256 content hashes of incoming messages and matches `Message-ID` headers to prevent processing duplicate requests.
-- **Dashboard Feed**: Displays unread incoming requests with status badges (`New`, `Analyzing`, `Extracted`, `Proposal Created`).
+- **Operating Entity**: **Nexura Technologies Pvt. Ltd.**
+- **Headquarters**: Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081
+- **Dedicated Sales Email**: `anyaforgerrrr345@gmail.com`
+- **GSTIN**: `36AAACN1234F1Z5` (Telangana State Code: `36`)
+- **PAN**: `AAACN1234F`
+- **Corporate Remittance**: HDFC Bank Ltd., Madhapur Branch (A/C: `50200012345678` | IFSC: `HDFC0001234`)
+- **Currency & Taxation**: Indian Rupee (`₹` INR) & 18% GST
+  - **Intra-State (Telangana)**: Split into **CGST 9%** + **SGST 9%**
+  - **Inter-State (Outside Telangana)**: **IGST 18%**
 
-### 2. 🧠 AI-Based Email Analysis (Gemini API)
-- Extracts structured B2B requirements into clean JSON:
-  - Client / Company Name & Contact Details
-  - Project Title & Executive Summary
-  - Scope of Work & Deliverable Items
-  - Quantity breakdowns and unit types
-  - Expected timeline and budget figures
-- **Missing Information Alert**: Identifies unstated details (e.g., cloud provider, user counts, target launch dates) so sales reps know what to clarify.
-- **Human-in-the-Loop Review**: Allows the user to verify, modify, and adjust requirements before generating the proposal.
+---
 
-### 3. 💰 Deterministic Pricing Automation
-- **Predefined Service Catalogue**: Full CRUD management of active B2B service packages (Software Licensing, Cloud Infrastructure, Full-Stack Development, Security Audits, 24/7 SLA Support, Database Migration, AI Workflows).
-- **Automated Semantic Matcher**: Matches extracted requirements against catalogue items using keyword heuristics.
-- **Strict Anti-Hallucination Rule**: Mathematical calculations occur strictly on the backend. Uncatalogued items are flagged as `Custom Requirement (Requires Manual Quote)`.
+## 🌟 End-to-End Workflow & Screens
 
-### 4. 🎨 Standout Feature: The Commercial Proposal Editor
-- **Split-View Real-Time Interface**: Edit on the left; watch the exact A4 document sheet update in real time on the right.
-- **3 Professional Design Themes**:
-  1. **Modern Business**: Clean tech aesthetic, blue/accent highlights, badges, structured tables.
-  2. **Corporate Elegance**: Executive dark navy header with gold accent rule, serif headings, formal legal layout.
-  3. **Minimal Style**: Swiss minimalist high-whitespace layout with crisp typography and hairline dividers.
-- **Interactive Section Tabs**:
-  - *General & Parties*: Client entity, provider entity, accent color palette picker, issue and validity dates.
-  - *Project Overview*: Executive summary with one-click **AI Assist** (Executive, Persuasive, or Formal tone).
-  - *Deliverables*: Add, edit, or re-order project deliverables.
-  - *Pricing & Line Items*: Add catalogue or custom items, modify quantities, adjust discount % and tax %.
-  - *Timeline & Milestones*: Phase names, durations, and sign-off criteria.
-  - *Terms & Signatures*: Payment milestone schedules (e.g., 30/40/30) and authorized signature blocks.
+```
+   ┌────────────────────────────────────────────────────────────────┐
+   │ Customer Email to anyaforgerrrr345@gmail.com                   │
+   │ From: rahul@abcsolutions.in (Rahul Sharma, ABC Solutions)      │
+   │ Subject: Requirement for E-commerce Website Development        │
+   └───────────────────────────────┬────────────────────────────────┘
+                                   │
+                                   ▼
+   ┌────────────────────────────────────────────────────────────────┐
+   │ SCREEN 1: Sales Inbox (3-Pane CRM Interface)                   │
+   │ • Left: Sidebar (Inbox, Proposals, Sent, Follow-ups, Pricing)  │
+   │ • Middle: Inbound enquiry feed with AI Lead Priority badges    │
+   │ • Right: Selected email content & AI analysis action           │
+   └───────────────────────────────┬────────────────────────────────┘
+                                   │
+                                   ▼
+   ┌────────────────────────────────────────────────────────────────┐
+   │ SCREEN 2: AI Requirement Analysis & Extraction                 │
+   │ • Client: ABC Solutions Pvt. Ltd. | Contact: Rahul Sharma      │
+   │ • 6 Identified Features (Auth, Catalog, Cart, Payment, etc.)   │
+   │ • Timeline: 60 Days | Budget: Not Specified                    │
+   │ • Missing Info: Hosting preference, SKU count, SMS gateway     │
+   │ • Lead Priority: HIGH (Established firm with 60-day deadline)  │
+   └───────────────────────────────┬────────────────────────────────┘
+                                   │
+                                   ▼
+   ┌────────────────────────────────────────────────────────────────┐
+   │ SCREEN 3: Deterministic Pricing Automation (₹ INR)              │
+   │ • Website development (1 unit):              ₹50,000           │
+   │ • Admin dashboard (1 unit):                  ₹15,000           │
+   │ • Payment integration (Razorpay/UPI) (1 unit):₹8,000           │
+   │ • Testing and deployment (1 unit):            ₹7,000           │
+   │ ────────────────────────────────────────────────────────────  │
+   │ Subtotal:                                    ₹80,000           │
+   │ 18% GST (CGST 9% ₹7,200 + SGST 9% ₹7,200):   ₹14,400           │
+   │ TOTAL INVESTMENT:                            ₹94,400 INR       │
+   └───────────────────────────────┬────────────────────────────────┘
+                                   │
+                                   ▼
+   ┌────────────────────────────────────────────────────────────────┐
+   │ SCREEN 4: Delivery via Gmail API & 3-Day Follow-Up Automation  │
+   │ • Attached: Playwright Vector PDF (PR-2025-001_modern.pdf)     │
+   │ • Dispatched to rahul@abcsolutions.in via Gmail API            │
+   │ • Automatic 3-Day Follow-Up Task scheduled for +3 days         │
+   └────────────────────────────────────────────────────────────────┘
+```
 
-### 5. 📄 High-Fidelity PDF Generation & Delivery
-- **Playwright Chromium Vector PDFs**: Generates print-quality A4 PDFs using headless Chromium.
-- **Proposal Delivery Modal**: Sends the generated PDF directly to the customer's email address with a customized cover letter.
-- **Audit History**: Complete chronological timeline of all proposal events and activities.
+---
+
+## 🔥 3 Standout Differentiating Features
+
+### 1. ⏰ Automatic 3-Day Follow-Up Reminders
+- Proposals sent to prospective clients automatically schedule a follow-up reminder for **+3 calendar days**.
+- The **Follow-Up Reminders** view actively tracks non-responsive proposals.
+- Sales executives can review the pending list and trigger a personalized follow-up email with 1-click via the Gmail API.
+
+### 2. 📑 Proposal Version Tracking & Negotiation History (`v1` → `v2`)
+- In enterprise B2B sales, clients regularly negotiate scope, milestones, or discounts.
+- Nexura Sales AI includes **Version Branching**: click **"Revise (v2)"** to branch any existing proposal.
+- Retains the parent link (`parent_proposal_id`) and preserves the full audit trail of negotiations.
+
+### 3. 🎯 AI Lead Priority Classification (`High`, `Medium`, `Low`)
+- Incoming customer inquiries are automatically classified by AI based on commercial urgency, budget signals, and scope completeness.
+- Sales representatives retain full control and can override the classification with a single click.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Component | Technology | Description |
-|-----------|-----------|-------------|
-| **Frontend** | React 18 + Vite | Lightning-fast reactive interface |
-| **Styling** | Tailwind CSS + Lucide Icons | Polished commercial B2B SaaS design system |
-| **Backend** | Python 3.13 + FastAPI | High-performance asynchronous REST API |
-| **Database** | PostgreSQL (Prod) / SQLite (Dev) | SQLAlchemy 2.0 ORM with dialect auto-adaptation |
-| **AI Integration** | Google Gemini API (`google-genai`) | Structured extraction & tone refinement |
-| **PDF Engine** | Playwright (Headless Chromium) | Exact A4 PDF rendering |
-| **Email Protocol** | Gmail API, IMAP4-SSL & SMTP | Ingestion and client delivery |
+| Layer | Technologies | Purpose |
+|---|---|---|
+| **Frontend** | React 18, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti | Responsive 3-pane sales console |
+| **Backend** | Python 3.11+, FastAPI, SQLAlchemy, Pydantic v2 | High-throughput asynchronous REST API |
+| **Database** | SQLite / PostgreSQL | ACID transactions for proposals, line items, and audit logs |
+| **AI Extraction** | Google Gemini API (`gemini-2.5-flash`) + Indian IT Heuristic Fallback | Multi-field extraction and missing info detection |
+| **Email Protocols** | Gmail API (OAuth 2.0 / REST), IMAP SSL (Port 993), Webhook | Real-time inbound ingestion and outbound PDF dispatch |
+| **PDF Generation** | Playwright Chromium (Headless) | High-fidelity vector PDF generation matching HTML templates |
 
 ---
 
-## 📦 Local Setup Instructions
+## 📂 Repository Structure
 
-### Prerequisites
-- Node.js v18+ or v22+
-- Python 3.10+ (tested on Python 3.13)
-- Git
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/Email_Proposal_Generator.git
-cd Email_Proposal_Generator
+```
+Email_Proposal_Generator/
+├── backend/
+│   ├── app/
+│   │   ├── config.py              # Hyderabad corporate details, GSTIN, PAN, bank coordinates
+│   │   ├── database.py            # SQLite / PostgreSQL engine & session maker
+│   │   ├── main.py                # FastAPI application entrypoint & lifecycle hooks
+│   │   ├── models/                # SQLAlchemy ORM models (email, proposal, pricing, activity)
+│   │   ├── routers/               # REST API endpoints (emails, pricing, proposals, settings)
+│   │   ├── schemas/               # Pydantic v2 validation schemas (INR & GST fields)
+│   │   ├── services/
+│   │   │   ├── ai_service.py      # Gemini API & Indian IT domain extraction heuristics
+│   │   │   ├── email_service.py   # Gmail API, IMAP sync, deduplication, webhook ingestion
+│   │   │   ├── mailer_service.py  # Outbound delivery & 3-day follow-up automation
+│   │   │   ├── pdf_service.py     # Playwright headless Chromium vector PDF generator
+│   │   │   └── pricing_service.py # Deterministic catalogue matching & 18% GST calculation
+│   │   ├── templates/             # Jinja2 vector PDF templates (modern, corporate, minimal)
+│   │   └── utils/seed_data.py     # Pre-seeded Rahul Sharma, Priya Nair, and Vikas Mehta enquiries
+│   └── tests/
+│       └── test_e2e_workflow.py   # Complete end-to-end integration test suite
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── inbox/             # Screen 1 (Sales Inbox 3-pane) & Follow-Up Reminders
+│   │   │   ├── editor/            # Screen 3 & Standout proposal editor with live A4 preview
+│   │   │   ├── layout/            # Sidebar, Header, and tab router
+│   │   │   ├── pricing/           # Standard Pricing Catalogue in ₹ INR
+│   │   │   ├── proposals/         # Proposals pipeline & version badges (v1, v2)
+│   │   │   └── settings/          # System settings, GSTIN, PAN, and Gmail integration
+│   │   ├── context/AppContext.jsx # Global state management
+│   │   └── services/api.js        # Frontend REST API client
+│   └── package.json
+└── README.md
 ```
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-*(Optional: Insert your `GEMINI_API_KEY`. If left empty, ProposalGen AI automatically operates in smart offline rule-based mode for complete offline demonstration.)*
+---
 
-### 3. Setup and Run the Backend
+## 🚀 Local Installation & Setup
+
+### 1. Prerequisites
+- Python 3.11+
+- Node.js 18+ and npm
+- (Optional) Google Gemini API Key from [Google AI Studio](https://aistudio.google.com/)
+
+### 2. Backend Setup
 ```bash
 # Navigate to backend directory
 cd backend
 
-# Create virtual environment
+# Create virtual environment and activate
 python -m venv venv
-
-# Activate virtual environment
-# Windows:
+# On Windows:
 venv\Scripts\activate
-# macOS/Linux:
+# On Linux/macOS:
 source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Install Playwright Chromium browser
+# Install Playwright browser binaries for PDF rendering
 playwright install chromium
-
-# Launch the FastAPI backend server
-python run.py
 ```
-The backend will start at: `http://localhost:8000` (API documentation at `http://localhost:8000/docs`).
 
-### 4. Setup and Run the Frontend
-In a new terminal window:
+### 3. Configure Environment Variables
+Create a `.env` file in the project root:
+```env
+# Google Gemini API
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+# Sales Gmail Inbox
+GMAIL_SENDER_EMAIL=anyaforgerrrr345@gmail.com
+
+# Company Information (Hyderabad, India)
+COMPANY_NAME=Nexura Technologies Pvt. Ltd.
+COMPANY_EMAIL=anyaforgerrrr345@gmail.com
+COMPANY_PHONE=+91 40 4859 2300
+COMPANY_WEBSITE=https://nexuratech.in
+COMPANY_ADDRESS=Plot 42, Hitec City Phase 2, Madhapur, Hyderabad, Telangana 500081
+COMPANY_GSTIN=36AAACN1234F1Z5
+COMPANY_PAN=AAACN1234F
+COMPANY_BANK_NAME=HDFC Bank Ltd.
+COMPANY_BANK_ACCOUNT=50200012345678
+COMPANY_BANK_IFSC=HDFC0001234
+```
+
+### 4. Run Integration Tests
+Verify the full end-to-end sales workflow (Inbound Email → AI Analysis → Catalogue Pricing ₹94,400 → Vector PDF → Follow-up Reminder):
 ```bash
-# Navigate to frontend directory
+python backend/tests/test_e2e_workflow.py
+# Output: ALL TESTS PASSED SUCCESSFULLY!
+```
+
+### 5. Launch Backend Server
+```bash
+uvicorn backend.app.main:app --reload --port 8000
+```
+Swagger API Documentation is available at: `http://localhost:8000/docs`
+
+### 6. Launch Frontend Client
+In a new terminal:
+```bash
 cd frontend
-
-# Install npm packages
 npm install
-
-# Start Vite development server
 npm run dev
 ```
-The frontend application will be running at: `http://localhost:3000`.
+The user console will be accessible at: `http://localhost:5173`
 
 ---
 
-## ☁️ Deployment Guide
+## 🌐 Production Deployment Guide
 
-### A. Deploy Backend on Render (Web Service + PostgreSQL)
+### Deploy Backend on Render / Railway
 1. Push your repository to GitHub.
-2. In the [Render Dashboard](https://dashboard.render.com), create a **New Web Service** connected to your repository.
-3. Configure the settings:
-   - **Root Directory**: `backend` (or leave empty and use root run)
-   - **Environment**: `Python 3`
-   - **Build Command**: `pip install -r backend/requirements.txt && playwright install chromium --with-deps`
+2. In [Render](https://render.com) or [Railway](https://railway.app), create a new **Web Service**.
+3. Set the build and start commands:
+   - **Build Command**: `pip install -r backend/requirements.txt && playwright install chromium`
    - **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
-4. In **Environment Variables**, add:
-   - `DATABASE_URL`: Your PostgreSQL connection string (from Render Managed PostgreSQL)
-   - `GEMINI_API_KEY`: Your Google Gemini API Key
-   - `GEMINI_MODEL`: `gemini-1.5-flash`
-   - `COMPANY_NAME`: `ProposalGen Solutions Inc.`
-   - `COMPANY_EMAIL`: `sales@proposalgen.ai`
-5. Click **Deploy Web Service**.
+4. Configure the environment variables in the dashboard.
 
-### B. Deploy Frontend on Vercel
-1. Import your GitHub repository into [Vercel](https://vercel.com).
+### Deploy Frontend on Vercel
+1. Import the repository in [Vercel](https://vercel.com).
 2. Set **Root Directory** to `frontend`.
 3. Set **Framework Preset** to `Vite`.
-4. In **Environment Variables**, add:
-   - `VITE_API_URL`: Your deployed Render backend URL (e.g. `https://proposalgen-backend.onrender.com`).
+4. Add environment variable:
+   - `VITE_API_URL=https://your-backend-url.onrender.com`
 5. Click **Deploy**.
 
 ---
 
-## 📡 Key REST API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/analytics/dashboard` | Dashboard metrics, recent requests, and activity feed |
-| `GET` | `/api/emails` | List all ingested customer emails with status filters |
-| `POST` | `/api/emails/ingest` | Ingest email with SHA-256 deduplication check |
-| `POST` | `/api/emails/sync` | Trigger IMAP/Gmail mailbox sync |
-| `POST` | `/api/emails/{id}/analyze` | Execute AI structured requirement extraction |
-| `GET` | `/api/pricing` | View active service catalogue items |
-| `POST` | `/api/pricing/match` | Deterministically match requirements with catalogue rates |
-| `GET` | `/api/proposals` | List all generated business proposals |
-| `POST` | `/api/proposals` | Create new proposal document |
-| `PUT` | `/api/proposals/{id}` | Update proposal in the live proposal editor |
-| `POST` | `/api/proposals/{id}/generate-pdf`| Render Playwright Chromium A4 PDF |
-| `GET` | `/api/proposals/{id}/download-pdf`| Download binary proposal PDF |
-| `POST` | `/api/proposals/{id}/send` | Deliver proposal to customer via email |
-
----
-
 ## 📄 License
-MIT License. Built for enterprise B2B sales automation workflows.
+This project is open-source under the MIT License. Developed for enterprise B2B sales automation.

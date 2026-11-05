@@ -15,11 +15,11 @@ import {
 import { api } from '../../services/api';
 import { useApp } from '../../context/AppContext';
 
-export default function ProposalList() {
+export default function ProposalList({ initialStatus = 'all' }) {
   const { openEditorWithProposal, setActiveTab, showToast, loadDashboard } = useApp();
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [search, setSearch] = useState('');
 
   const fetchProposals = async () => {
@@ -113,14 +113,14 @@ export default function ProposalList() {
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-            <DollarSign className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 font-bold text-lg">
+            ₹
           </div>
           <div>
             <div className="text-2xl font-bold text-slate-900">
-              ${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              ₹{totalValue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </div>
-            <div className="text-xs text-slate-500 font-medium">Total Pipeline Value</div>
+            <div className="text-xs text-slate-500 font-medium">Total Pipeline Value (INR)</div>
           </div>
         </div>
 
@@ -193,7 +193,16 @@ export default function ProposalList() {
               ) : (
                 proposals.map((prop) => (
                   <tr key={prop.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-4 font-mono font-bold text-blue-600">{prop.id}</td>
+                    <td className="p-4 font-mono font-bold text-blue-600">
+                      <div className="flex items-center gap-1.5">
+                        <span>{prop.id}</span>
+                        {prop.version && (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-100 text-purple-700">
+                            v{prop.version}
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="p-4">
                       <div className="font-bold text-slate-900">{prop.client_company}</div>
                       <div className="text-[11px] text-slate-500">{prop.client_name || prop.client_email}</div>
@@ -205,9 +214,18 @@ export default function ProposalList() {
                       </span>
                     </td>
                     <td className="p-4 text-right font-bold text-slate-900 text-sm">
-                      ${(prop.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      ₹{(prop.total_amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="p-4 text-center">{getStatusBadge(prop.status)}</td>
+                    <td className="p-4 text-center">
+                      <div className="flex flex-col items-center gap-1">
+                        {getStatusBadge(prop.status)}
+                        {prop.status === 'sent' && prop.follow_up_status === 'pending' && (
+                          <span className="text-[9px] text-amber-700 bg-amber-50 px-1 py-0.5 rounded border border-amber-200">
+                            3d Follow-up Due
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="p-4 text-slate-500 font-medium">{prop.created_date || 'Nov 05, 2026'}</td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">

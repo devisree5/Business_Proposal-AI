@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { X, Send, Mail, CheckCircle2, FileText, Sparkles } from 'lucide-react';
+import { X, Send, Mail, CheckCircle2, FileText, Sparkles, Clock } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { api } from '../../services/api';
 import { useApp } from '../../context/AppContext';
 
 export default function SendProposalModal({ isOpen, onClose, proposal, onSent }) {
-  const { showToast, loadDashboard } = useApp();
+  const { showToast, loadProposals, loadFollowUps } = useApp();
   const [recipientEmail, setRecipientEmail] = useState(proposal?.client_email || '');
   const [recipientName, setRecipientName] = useState(proposal?.client_name || '');
   const [subject, setSubject] = useState(
-    `Business Proposal: ${proposal?.title || 'Enterprise Commercial Proposal'} [Ref: ${proposal?.id || 'PR-2025'}]`
+    `Business Proposal: ${proposal?.title || 'E-commerce Website Development'} [Ref: ${proposal?.id || 'PR-2025-001'}]`
   );
   const [message, setMessage] = useState(
-    `Dear ${proposal?.client_name || 'Client'},\n\nThank you for considering ${proposal?.sender_company || 'our team'} for your upcoming initiative. Please review the attached formal business proposal outlining our scope, deliverables, timeline, and investment breakdown.\n\nWe look forward to partnering with ${proposal?.client_company || 'your organization'}.\n\nBest regards,\n${proposal?.sender_name || 'Sarah Jenkins'}`
+    `Dear ${proposal?.client_name || 'Rahul Sharma'},\n\nThank you for considering ${proposal?.sender_company || 'Nexura Technologies Pvt. Ltd.'} for your upcoming project. Please find attached our detailed commercial business proposal (Ref: ${proposal?.id || 'PR-2025-001'}) covering scope, 60-day delivery milestones, and GST pricing breakdown.\n\nWe look forward to collaborating with ${proposal?.client_company || 'ABC Solutions Pvt. Ltd.'}.\n\nBest regards,\n${proposal?.sender_name || 'Anya Sharma'}\nSolutions Lead | Nexura Technologies Pvt. Ltd., Hyderabad`
   );
   const [sending, setSending] = useState(false);
 
@@ -21,7 +21,7 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
   const handleSend = async (e) => {
     e.preventDefault();
     setSending(true);
-    showToast('Sending proposal to client via email...', 'info');
+    showToast('Sending proposal via Gmail API (anyaforgerrrr345@gmail.com)...', 'info');
 
     try {
       const res = await api.sendProposal(proposal.id, {
@@ -38,9 +38,9 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
         origin: { y: 0.6 }
       });
 
-      showToast(`Proposal sent successfully to ${recipientEmail}!`);
-      onSent(res);
-      loadDashboard();
+      showToast(`Proposal sent successfully to ${recipientEmail}! Follow-up reminder scheduled for +3 days.`);
+      if (onSent) onSent(res);
+      await Promise.all([loadProposals(), loadFollowUps()]);
       onClose();
     } catch (err) {
       showToast(err.message || 'Failed to deliver proposal email', 'error');
@@ -48,6 +48,11 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
       setSending(false);
     }
   };
+
+  const formattedAmount = (proposal?.total_amount || 0).toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
@@ -60,7 +65,9 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-sm">Send Proposal to Client</h3>
-              <p className="text-xs text-slate-500">Proposal #{proposal?.id} &bull; ${proposal?.total_amount?.toLocaleString()} {proposal?.currency}</p>
+              <p className="text-xs text-slate-500">
+                Proposal #{proposal?.id} &bull; ₹{formattedAmount} INR (incl. 18% GST)
+              </p>
             </div>
           </div>
           <button
@@ -69,6 +76,18 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
           >
             <X className="w-5 h-5" />
           </button>
+        </div>
+
+        {/* Sender Info Banner */}
+        <div className="bg-blue-50/70 border-b border-blue-100 px-5 py-2.5 flex items-center justify-between text-[11px] text-blue-900">
+          <div className="flex items-center gap-1.5">
+            <Mail className="w-3.5 h-3.5 text-blue-600" />
+            <span>Sender: <strong>anyaforgerrrr345@gmail.com</strong> (Gmail API)</span>
+          </div>
+          <div className="flex items-center gap-1 text-blue-700 font-medium">
+            <Clock className="w-3 h-3 text-amber-600" />
+            <span>3-Day Follow-Up Auto-Scheduled</span>
+          </div>
         </div>
 
         {/* Form Body */}
@@ -123,7 +142,7 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
               <FileText className="w-4 h-4 text-blue-600" />
               <div className="text-xs">
                 <span className="font-semibold text-slate-800">{proposal?.id}_{proposal?.client_company?.replace(/\s+/g, '_')}_Proposal.pdf</span>
-                <span className="text-[10px] text-slate-400 block">Generated Playwright Vector PDF</span>
+                <span className="text-[10px] text-slate-400 block">Generated Playwright Vector PDF (with GSTIN & Bank Details)</span>
               </div>
             </div>
             <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
@@ -146,7 +165,7 @@ export default function SendProposalModal({ isOpen, onClose, proposal, onSent })
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all disabled:opacity-60"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>{sending ? 'Delivering...' : 'Send Proposal to Client'}</span>
+              <span>{sending ? 'Delivering via Gmail...' : 'Send Proposal via Gmail'}</span>
             </button>
           </div>
         </form>
