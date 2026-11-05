@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ proposal.title }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 20mm 20mm 20mm 20mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #18181b;
+      background: #ffffff;
+      font-size: 12.5px;
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .brand {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: #09090b;
+      margin-bottom: 24px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #18181b;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: #09090b;
+    }
+
+    .meta-num {
+      font-size: 12px;
+      color: #71717a;
+      font-family: monospace;
+    }
+
+    /* Parties info */
+    .parties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 24px;
+      margin-bottom: 36px;
+    }
+
+    .col-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #a1a1aa;
+      margin-bottom: 6px;
+    }
+
+    .col-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #09090b;
+    }
+
+    .col-detail {
+      font-size: 12px;
+      color: #71717a;
+      margin-top: 2px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .sec-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #71717a;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .sec-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #27272a;
+    }
+
+    /* Deliverables */
+    .deliv-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .deliv-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #f4f4f5;
+      display: flex;
+      gap: 12px;
+      font-size: 12.5px;
+    }
+
+    .deliv-dot {
+      color: #71717a;
+    }
+
+    /* Pricing Minimal Table */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .table th {
+      text-align: left;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #71717a;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e4e4e7;
+    }
+
+    .table td {
+      padding: 12px 0;
+      border-bottom: 1px solid #f4f4f5;
+      font-size: 12.5px;
+    }
+
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+
+    /* Totals */
+    .totals {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-top: 16px;
+      gap: 6px;
+    }
+
+    .t-row {
+      display: flex;
+      width: 240px;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #71717a;
+    }
+
+    .t-final {
+      border-top: 1px solid #18181b;
+      padding-top: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #09090b;
+    }
+
+    /* Signatures */
+    .signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e4e4e7;
+      page-break-inside: avoid;
+    }
+
+    .sig-name {
+      font-weight: 500;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .sig-sub {
+      font-size: 11px;
+      color: #a1a1aa;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">{{ proposal.sender_company }}</div>
+    <div class="title-row">
+      <div class="title">{{ proposal.title }}</div>
+      <div class="meta-num">{{ proposal.id }} &bull; {{ proposal.created_date or 'November 05, 2026' }}</div>
+    </div>
+  </div>
+
+  <div class="parties">
+    <div>
+      <div class="col-label">Client</div>
+      <div class="col-name">{{ proposal.client_company }}</div>
+      <div class="col-detail">{{ proposal.client_name or 'Client Lead' }} &bull; {{ proposal.client_email }}</div>
+    </div>
+    <div>
+      <div class="col-label">Provider</div>
+      <div class="col-name">{{ proposal.sender_name or 'Sarah Jenkins' }}</div>
+      <div class="col-detail">{{ proposal.sender_email }} &bull; {{ proposal.sender_phone or '+1 800 555-0199' }}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">01 / Project Overview</div>
+    <div class="sec-body">{{ proposal.project_overview }}</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">02 / Scope & Deliverables</div>
+    {% if proposal.scope_of_work %}
+    <div class="sec-body" style="margin-bottom: 10px;">{{ proposal.scope_of_work }}</div>
+    {% endif %}
+    <ul class="deliv-list">
+      {% for item in proposal.deliverables %}
+      <li class="deliv-item">
+        <span class="deliv-dot">—</span>
+        <div>
+          {% if item is string %}
+            {{ item }}
+          {% else %}
+            <strong>{{ item.title or item.name }}</strong>: {{ item.description or item.details }}
+          {% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% if proposal.timeline_milestones %}
+  <div class="section">
+    <div class="sec-label">03 / Timeline</div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 8px;">
+      {% for m in proposal.timeline_milestones %}
+      <div style="border-left: 1px solid #18181b; padding-left: 10px;">
+        <div style="font-size: 10px; color: #a1a1aa; text-transform: uppercase;">{{ m.phase or 'Phase ' ~ loop.index }} &bull; {{ m.duration }}</div>
+        <div style="font-weight: 500; margin: 2px 0;">{{ m.title }}</div>
+        <div style="font-size: 11px; color: #71717a;">{{ m.deliverables }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="section">
+    <div class="sec-label">04 / Financials</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 50%;">Item</th>
+          <th class="text-center" style="width: 15%;">Qty</th>
+          <th class="text-right" style="width: 15%;">Rate</th>
+          <th class="text-right" style="width: 20%;">Total ({{ proposal.currency }})</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in proposal.line_items %}
+        <tr>
+          <td>
+            <div style="font-weight: 500;">{{ item.name }}</div>
+            {% if item.description %}<div style="font-size: 11px; color: #71717a;">{{ item.description }}</div>{% endif %}
+          </td>
+          <td class="text-center">{{ item.quantity }} {{ item.unit_type }}</td>
+          <td class="text-right">${{ "{:,.2f}".format(item.unit_price) }}</td>
+          <td class="text-right" style="font-weight: 500;">${{ "{:,.2f}".format(item.total) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div class="t-row">
+        <span>Subtotal</span>
+        <span>${{ "{:,.2f}".format(proposal.subtotal) }}</span>
+      </div>
+      {% if proposal.discount_percent and proposal.discount_percent > 0 %}
+      <div class="t-row">
+        <span>Discount ({{ proposal.discount_percent }}%)</span>
+        <span>-${{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span>
+      </div>
+      {% endif %}
+      <div class="t-row">
+        <span>Tax ({{ proposal.tax_percent }}%)</span>
+        <span>${{ "{:,.2f}".format(proposal.tax_amount) }}</span>
+      </div>
+      <div class="t-row t-final">
+        <span>Total Investment</span>
+        <span>${{ "{:,.2f}".format(proposal.total_amount) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">05 / Terms</div>
+    <div class="sec-body" style="font-size: 11.5px; color: #71717a;">
+      {{ proposal.payment_terms }} &bull; {{ proposal.terms_and_conditions }}
+    </div>
+  </div>
+
+  <div class="signatures">
+    <div>
+      <div class="sig-name">{{ proposal.client_company }}</div>
+      <div class="sig-sub">Accepted & Authorized</div>
+    </div>
+    <div>
+      <div class="sig-name">{{ proposal.sender_company }}</div>
+      <div class="sig-sub">Prepared by {{ proposal.sender_name }}</div>
+    </div>
+  </div>
+</body>
+</html>

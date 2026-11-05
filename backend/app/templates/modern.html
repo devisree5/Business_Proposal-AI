@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ proposal.title }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      font-size: 13px;
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 24px;
+      border-bottom: 2px solid {{ proposal.accent_color or '#2563eb' }};
+      margin-bottom: 28px;
+    }
+
+    .brand-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .proposal-badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: {{ proposal.accent_color or '#2563eb' }};
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .meta-box {
+      text-align: right;
+    }
+
+    .meta-id {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .meta-date {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Client & Provider Grid */
+    .parties-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .party-col h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .party-col .name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .party-col .detail {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 3px;
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .section-title .bar {
+      width: 4px;
+      height: 16px;
+      background: {{ proposal.accent_color or '#2563eb' }};
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .overview-text {
+      color: #334155;
+      font-size: 13.5px;
+      line-height: 1.7;
+      background: #ffffff;
+    }
+
+    /* Deliverables List */
+    .deliverables-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .deliverable-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+
+    .deliverable-bullet {
+      color: {{ proposal.accent_color or '#2563eb' }};
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .deliverable-content {
+      font-size: 13px;
+      color: #334155;
+    }
+
+    /* Timeline Cards */
+    .milestones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .milestone-card {
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 14px;
+      border-top: 3px solid {{ proposal.accent_color or '#2563eb' }};
+    }
+
+    .phase-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: {{ proposal.accent_color or '#2563eb' }};
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .milestone-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 4px 0;
+    }
+
+    .milestone-duration {
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    .milestone-deliv {
+      font-size: 11.5px;
+      color: #475569;
+      margin-top: 6px;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 6px;
+    }
+
+    /* Pricing Table */
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pricing-table th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .pricing-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      font-size: 12.5px;
+    }
+
+    .pricing-table tr:nth-child(even) td {
+      background: #fbfcfd;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .item-desc {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Totals Box */
+    .totals-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .totals-box {
+      width: 280px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .grand-total {
+      border-top: 2px solid {{ proposal.accent_color or '#2563eb' }};
+      margin-top: 8px;
+      padding-top: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* Terms */
+    .terms-box {
+      background: #fafaf9;
+      border-left: 3px solid #cbd5e1;
+      padding: 12px 16px;
+      font-size: 11.5px;
+      color: #64748b;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 24px;
+    }
+
+    /* Signatures */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 36px;
+      page-break-inside: avoid;
+    }
+
+    .sig-block {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 12px;
+    }
+
+    .sig-line {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .sig-title {
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    .sig-date {
+      font-size: 11.5px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <div class="brand-title">{{ proposal.sender_company }}</div>
+        <div class="brand-subtitle">{{ proposal.sender_address or 'Enterprise Technology Solutions' }}</div>
+      </div>
+      <div class="meta-box">
+        <span class="proposal-badge">Business Proposal</span>
+        <div class="meta-id">{{ proposal.id }}</div>
+        <div class="meta-date">Date: {{ proposal.created_date or 'November 05, 2026' }}</div>
+        <div class="meta-date">Valid Until: {{ proposal.valid_until or 'December 05, 2026' }}</div>
+      </div>
+    </div>
+
+    <!-- Parties -->
+    <div class="parties-grid">
+      <div class="party-col">
+        <h4>Prepared For</h4>
+        <div class="name">{{ proposal.client_company }}</div>
+        <div class="detail">Attn: {{ proposal.client_name or 'Procurement Lead' }}</div>
+        <div class="detail">{{ proposal.client_email }}</div>
+        {% if proposal.client_phone %}
+        <div class="detail">{{ proposal.client_phone }}</div>
+        {% endif %}
+      </div>
+      <div class="party-col">
+        <h4>Prepared By</h4>
+        <div class="name">{{ proposal.sender_name or 'Sarah Jenkins' }}</div>
+        <div class="detail">{{ proposal.sender_company }}</div>
+        <div class="detail">{{ proposal.sender_email }}</div>
+        <div class="detail">{{ proposal.sender_phone or '+1 (800) 555-0199' }}</div>
+      </div>
+    </div>
+
+    <!-- Project Overview -->
+    <div class="section">
+      <div class="section-title"><span class="bar"></span> 1. Executive Summary & Project Overview</div>
+      <div class="overview-text">{{ proposal.project_overview }}</div>
+    </div>
+
+    <!-- Scope of Work & Deliverables -->
+    <div class="section">
+      <div class="section-title"><span class="bar"></span> 2. Scope of Work & Deliverables</div>
+      {% if proposal.scope_of_work %}
+      <div class="overview-text" style="margin-bottom: 12px;">{{ proposal.scope_of_work }}</div>
+      {% endif %}
+      <div class="deliverables-list">
+        {% for item in proposal.deliverables %}
+        <div class="deliverable-item">
+          <span class="deliverable-bullet">✓</span>
+          <div class="deliverable-content">
+            {% if item is string %}
+              {{ item }}
+            {% else %}
+              <strong>{{ item.title or item.name }}</strong>: {{ item.description or item.details }}
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Timeline & Milestones -->
+    {% if proposal.timeline_milestones %}
+    <div class="section">
+      <div class="section-title"><span class="bar"></span> 3. Delivery Schedule & Milestones</div>
+      <div class="milestones-grid">
+        {% for m in proposal.timeline_milestones %}
+        <div class="milestone-card">
+          <div class="phase-badge">{{ m.phase or 'Phase ' ~ loop.index }}</div>
+          <div class="milestone-title">{{ m.title }}</div>
+          <div class="milestone-duration">⏱ {{ m.duration }}</div>
+          <div class="milestone-deliv">{{ m.deliverables }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Pricing Breakdown -->
+    <div class="section">
+      <div class="section-title"><span class="bar"></span> 4. Commercial Investment & Pricing Breakdown</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th style="width: 48%;">Service / Item Description</th>
+            <th class="text-center" style="width: 14%;">Qty / Units</th>
+            <th class="text-right" style="width: 18%;">Unit Rate</th>
+            <th class="text-right" style="width: 20%;">Amount ({{ proposal.currency }})</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in proposal.line_items %}
+          <tr>
+            <td>
+              <div class="item-name">{{ item.name }}</div>
+              {% if item.description %}
+              <div class="item-desc">{{ item.description }}</div>
+              {% endif %}
+            </td>
+            <td class="text-center">{{ item.quantity }} {{ item.unit_type }}</td>
+            <td class="text-right">${{ "{:,.2f}".format(item.unit_price) }}</td>
+            <td class="text-right" style="font-weight: 600;">${{ "{:,.2f}".format(item.total) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Totals -->
+      <div class="totals-container">
+        <div class="totals-box">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span>${{ "{:,.2f}".format(proposal.subtotal) }}</span>
+          </div>
+          {% if proposal.discount_percent and proposal.discount_percent > 0 %}
+          <div class="total-row" style="color: #16a34a;">
+            <span>Discount ({{ proposal.discount_percent }}%):</span>
+            <span>-${{ "{:,.2f}".format(proposal.subtotal * proposal.discount_percent / 100.0) }}</span>
+          </div>
+          {% endif %}
+          <div class="total-row">
+            <span>Estimated Tax ({{ proposal.tax_percent }}%):</span>
+            <span>${{ "{:,.2f}".format(proposal.tax_amount) }}</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total Investment:</span>
+            <span>${{ "{:,.2f}".format(proposal.total_amount) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms & Payment Schedule -->
+    <div class="section">
+      <div class="section-title"><span class="bar"></span> 5. Payment Schedule & Terms</div>
+      <div class="terms-box">
+        <strong>Payment Structure:</strong> {{ proposal.payment_terms or '30% Upon Kickoff, 40% Mid-Project Milestone, 30% Final Delivery & Acceptance' }}<br><br>
+        <strong>Terms & Conditions:</strong> {{ proposal.terms_and_conditions or 'This proposal is valid for 30 calendar days from the date of issue. Scope changes require written approval.' }}
+      </div>
+    </div>
+
+    <!-- Sign-off Block -->
+    <div class="signature-grid">
+      <div class="sig-block">
+        <div class="sig-line">Accepted by: {{ proposal.client_company }}</div>
+        <div class="sig-title">Authorized Representative Signature & Date</div>
+        <div class="sig-date">Date: ________________________</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line">Issued by: {{ proposal.sender_company }}</div>
+        <div class="sig-title">{{ proposal.sender_name or 'Sarah Jenkins' }}, Client Solutions</div>
+        <div class="sig-date">Date: {{ proposal.created_date or 'November 05, 2026' }}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

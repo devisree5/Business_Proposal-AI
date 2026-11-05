@@ -1,0 +1,32 @@
+# Environments & Dependencies
+node_modules/
+dist/
+.venv/
+venv/
+backend/venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases
+*.db
+*.sqlite3
+
+# Local Environment Variables & Secrets
+.env
+backend/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated PDFs & Temporary files
+backend/generated_pdfs/*.pdf
+backend/generated_pdfs/*.html
+!backend/generated_pdfs/.gitkeep

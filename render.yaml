@@ -1,0 +1,30 @@
+services:
+  # Backend FastAPI Web Service
+  - type: web
+    name: proposalgen-backend
+    runtime: python
+    buildCommand: "pip install -r backend/requirements.txt && playwright install chromium --with-deps"
+    startCommand: "python backend/run.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: proposalgen-db
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: COMPANY_NAME
+        value: "ProposalGen Solutions Inc."
+      - key: COMPANY_EMAIL
+        value: "sales@proposalgen.ai"
+
+databases:
+  - name: proposalgen-db
+    databaseName: proposalgen
+    user: proposalgen_user
+    plan: free

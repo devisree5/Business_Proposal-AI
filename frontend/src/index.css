@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-blue-600 selection:text-white bg-[#f8fafc] text-slate-800 font-sans;
+  }
+}
+
+/* Custom Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #proposal-print-area, #proposal-print-area * {
+    visibility: visible;
+  }
+  #proposal-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
