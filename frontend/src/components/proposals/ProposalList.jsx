@@ -54,9 +54,8 @@ export default function ProposalList({ initialStatus = 'all' }) {
   };
 
   const handleDownload = (id) => {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
     const link = document.createElement('a');
-    link.href = `${apiUrl}/api/proposals/${id}/download-pdf`;
+    link.href = api.getPdfDownloadUrl(id);
     link.download = `${id}_Proposal.pdf`;
     document.body.appendChild(link);
     link.click();

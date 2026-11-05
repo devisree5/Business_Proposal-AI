@@ -1,7 +1,14 @@
-const BASE_URL = import.meta.env.VITE_API_URL || '';
+const RAW_BASE_URL = import.meta.env.VITE_API_URL || '';
+export const BASE_URL = RAW_BASE_URL.replace(/\/+$/, '');
+
+export function getFullApiUrl(endpoint) {
+  if (endpoint.startsWith('http')) return endpoint;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  return `${BASE_URL}${cleanEndpoint}`;
+}
 
 async function fetchJSON(endpoint, options = {}) {
-  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
+  const url = getFullApiUrl(endpoint);
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -69,6 +76,7 @@ export const api = {
   deleteProposal: (id) => fetchJSON(`/api/proposals/${id}`, { method: 'DELETE' }),
   generatePDF: (id, template) =>
     fetchJSON(`/api/proposals/${id}/generate-pdf${template ? `?template=${template}` : ''}`, { method: 'POST' }),
+  getPdfDownloadUrl: (id) => getFullApiUrl(`/api/proposals/${id}/download-pdf`),
   sendProposal: (id, data) => fetchJSON(`/api/proposals/${id}/send`, { method: 'POST', body: JSON.stringify(data) }),
 
   // Follow-Up Reminders

@@ -146,9 +146,8 @@ export default function ProposalEditor() {
       await api.updateProposal(proposal.id, proposal);
       const res = await api.generatePDF(proposal.id, proposal.template_id);
       
-      const apiUrl = import.meta.env.VITE_API_URL || '';
       const link = document.createElement('a');
-      link.href = `${apiUrl}/api/proposals/${proposal.id}/download-pdf`;
+      link.href = api.getPdfDownloadUrl(proposal.id);
       link.download = `${proposal.id}_Proposal.pdf`;
       document.body.appendChild(link);
       link.click();
